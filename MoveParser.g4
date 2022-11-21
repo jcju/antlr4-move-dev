@@ -170,8 +170,11 @@ useTree
 
 // 6.4
 function_
-   : functionQualifiers 'fn' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
+   : functionVisibility functionQualifiers 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
       (blockExpression | ';')
+   ;
+functionVisibility
+   :   ('public' | 'public(friend)')?
    ;
 functionQualifiers
    : 'const'? 'async'? 'unsafe'? ('extern' abi?)?
@@ -773,7 +776,7 @@ typeNoBounds
    | sliceType
    | inferredType
    | qualifiedPathInType
-   | bareFunctionType
+//   | bareFunctionType
    | macroInvocation
    ;
 parenthesizedType
@@ -809,6 +812,7 @@ rawPointerType
    ;
 
 // 10.1.14
+/*
 bareFunctionType
    : forLifetimes? functionTypeQualifiers 'fn' '(' functionParametersMaybeNamedVariadic? ')' bareFunctionReturnType?
    ;
@@ -831,7 +835,7 @@ maybeNamedParam
 maybeNamedFunctionParametersVariadic
    : (maybeNamedParam ',')* maybeNamedParam ',' outerAttribute* '...'
    ;
-
+*/
 // 10.1.15
 traitObjectType
    : 'dyn'? typeParamBounds
@@ -974,7 +978,6 @@ keyword
    | KW_ENUM
    | KW_EXTERN
    | KW_FALSE
-   | KW_FN
    | KW_FOR
    | KW_IF
    | KW_IMPL
@@ -1000,6 +1003,11 @@ keyword
    | KW_USE
    | KW_WHERE
    | KW_WHILE
+
+   // move
+   | KW_FUN
+   | KW_PUBLIC
+   | KW_PUBLIC_FRIEND
 
    // 2018+
    | KW_ASYNC

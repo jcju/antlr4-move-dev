@@ -22,6 +22,10 @@ options
 {
    superClass = MoveLexerBase;
 }
+// Move - new added
+KW_FUN: 'fun';
+KW_PUBLIC: 'public';
+KW_PUBLIC_FRIEND: 'public(friend)';
 
 // https://doc.rust-lang.org/reference/keywords.html strict
 KW_AS: 'as';
@@ -33,7 +37,6 @@ KW_ELSE: 'else';
 KW_ENUM: 'enum';
 KW_EXTERN: 'extern';
 KW_FALSE: 'false';
-KW_FN: 'fn';
 KW_FOR: 'for';
 KW_IF: 'if';
 KW_IMPL: 'impl';
