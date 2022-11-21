@@ -5,11 +5,12 @@
 
 ### Build and run
 
+Simple usage:
 
 ```shell
 antlr4 MoveLexer.g4 MoveParser.g4
 javac *.java
-grun Move crate -gui < my_input.rs
+grun Move crate -gui < examples/hello.move
 ```
 
 
@@ -22,4 +23,4 @@ grun Move crate -gui < my_input.rs
 | ✅  | hello.move         |                                                                             |
 | ✅  | -- |                                                                             |
 | - | BasicCoin | not tested yet |
-| ❌  | place_holder            | test: FAIL                                                                                                                                       . |
+| ❌  | place_holder            | test: FAIL&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
