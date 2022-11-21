@@ -1,0 +1,18 @@
+.vscode/
+*/.vscode/
+
+*.sw?
+*.zip
+*.gz
+
+.antlr/
+
+## generated Java
+
+*.java
+*.class
+*.interp
+*.tokens
+!MoveLexerBase.java
+!MoveParserBase.java
+
