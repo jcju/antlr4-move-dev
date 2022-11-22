@@ -26,33 +26,47 @@ options
 // entry point
 // 4
 crate
-   : item* EOF
+   : moveModule EOF
    ;
 
 // ****************** defined for Move language ****************** //
 
+moveModule
+   : 'module' identifier (';' | '{' item* '}')
+   ;
+
 item
-   :  (visItem)
+   :  (visItem | normalItem)
    ;
 visItem
    : visibility?
    (
-      function_
-//      module
-//      | useDeclaration
-//      | typeAlias
+      functionItem
 //      | struct_
 //      | enumeration
 //      | union_
-//      | constantItem
 //      | staticItem
 //      | implementation
    )
    ;
+normalItem
+   :
+   (
+      typesItem
+      | useItem
+      | constantItem
+//      types_
+//      use_
+//      friend_
+//      constant_
+   )
+   ;
+
+// visItem - function
 visibility
    : ('public' | 'public(friend)' | 'public(script)')
    ;   
-function_
+functionItem
    : entryModifier 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? acquireAnnotation? 
       (blockExpression | ';')
    ;
@@ -104,6 +118,22 @@ functionReturnType
 acquireAnnotation
    : 'acquires' identifier+
    ;
+
+// normal Items
+typesItem
+   : 'type' identifier genericParams? whereClause? ('=' type_)? ';'
+   ;
+constantItem
+   : 'const' (identifier | '_') ':' type_ ('=' expression)? ';'
+   ;
+useItem
+   : 'use' useTree ';'
+   ;
+useTree
+   : (simplePath? '::')? ('*' | '{' ( useTree (',' useTree)* ','?)? '}')
+   | simplePath ('as' (identifier | '_'))?
+   ;
+
 // ************************** Rust parser ************************** //
 /*
 // 3
@@ -189,10 +219,6 @@ macroItem
    | macroRulesDefinition
    ;
 */
-// 6.1
-module
-   : 'unsafe'? 'mod' identifier (';' | '{' item* '}')
-   ;
 
 // 6.2
 /*
@@ -208,17 +234,11 @@ asClause
    ;
 
 // 6.3
-useDeclaration
-   : 'use' useTree ';'
-   ;
-useTree
-   : (simplePath? '::')? ('*' | '{' ( useTree (',' useTree)* ','?)? '}')
-   | simplePath ('as' (identifier | '_'))?
-   ;
+
 
 // 6.4
 /*
-function_
+functionItem
    : functionQualifiers 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
       (blockExpression | ';')
    ;
@@ -226,9 +246,7 @@ function_
 
 
 // 6.5
-typeAlias
-   : 'type' identifier genericParams? whereClause? ('=' type_)? ';'
-   ;
+
 
 // 6.6
 struct_
@@ -285,9 +303,7 @@ union_
    ;
 
 // 6.9
-constantItem
-   : 'const' (identifier | '_') ':' type_ ('=' expression)? ';'
-   ;
+
 
 // 6.10
 staticItem
@@ -321,7 +337,7 @@ externalItem
    : 
    (
       macroInvocationSemi
-      | visibility? ( staticItem | function_)
+      | visibility? ( staticItem | functionItem)
    )
    ;
 */
@@ -351,7 +367,7 @@ associatedItem
    : 
    (
       macroInvocationSemi
-      | visibility? ( typeAlias | constantItem | function_ )
+      | visibility? ( typeAlias | constantItem | functionItem )
    )
    ;
 
@@ -978,7 +994,6 @@ keyword
    | KW_LET
    | KW_LOOP
    | KW_MATCH
-   | KW_MOD
    | KW_MOVE
    | KW_MUT
 //   | KW_PUB
@@ -1002,7 +1017,9 @@ keyword
    | KW_PUBLIC
    | KW_PUBLIC_FRIEND
    | KW_PUBLIC_SCRIPT
-
+   | KW_MODULE
+   | KW_SCRIPT
+   
    // 2018+
    | KW_ASYNC
    | KW_AWAIT

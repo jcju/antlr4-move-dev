@@ -29,6 +29,8 @@ KW_PUBLIC_FRIEND: 'public(friend)';
 KW_PUBLIC_SCRIPT: 'public(script)';
 KW_ENTRY: 'entry';
 KW_ACQUIRE: 'acquires';
+KW_MODULE: 'module';
+KW_SCRIPT: 'script';
 
 // https://doc.rust-lang.org/reference/keywords.html strict
 KW_AS: 'as';
@@ -47,7 +49,6 @@ KW_IN: 'in';
 KW_LET: 'let';
 KW_LOOP: 'loop';
 KW_MATCH: 'match';
-KW_MOD: 'mod';
 KW_MOVE: 'move';
 KW_MUT: 'mut';
 //KW_PUB: 'pub';
