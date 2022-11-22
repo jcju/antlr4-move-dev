@@ -39,7 +39,6 @@ visItem
    (
       function_
 //      module
-//      | externCrate
 //      | useDeclaration
 //      | typeAlias
 //      | struct_
@@ -47,16 +46,14 @@ visItem
 //      | union_
 //      | constantItem
 //      | staticItem
-//      | trait_
 //      | implementation
-//      | externBlock
    )
    ;
 visibility
    : ('public' | 'public(friend)' | 'public(script)')
    ;   
 function_
-   : entryModifier 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
+   : entryModifier 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? acquireAnnotation? 
       (blockExpression | ';')
    ;
 entryModifier
@@ -104,7 +101,9 @@ functionParamPattern
 functionReturnType
    : ':' type_
    ;
-
+acquireAnnotation
+   : 'acquires' identifier+
+   ;
 // ************************** Rust parser ************************** //
 /*
 // 3
