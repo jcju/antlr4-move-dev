@@ -26,6 +26,7 @@ options
 KW_FUN: 'fun';
 KW_PUBLIC: 'public';
 KW_PUBLIC_FRIEND: 'public(friend)';
+KW_PUBLIC_SCRIPT: 'public(script)';
 
 // https://doc.rust-lang.org/reference/keywords.html strict
 KW_AS: 'as';
@@ -47,7 +48,7 @@ KW_MATCH: 'match';
 KW_MOD: 'mod';
 KW_MOVE: 'move';
 KW_MUT: 'mut';
-KW_PUB: 'pub';
+//KW_PUB: 'pub';
 KW_REF: 'ref';
 KW_RETURN: 'return';
 KW_SELFVALUE: 'self';

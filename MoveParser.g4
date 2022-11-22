@@ -106,37 +106,39 @@ macroTranscriber
    : delimTokenTree
    ;
 
-//configurationPredicate
-// : configurationOption | configurationAll | configurationAny | configurationNot ; configurationOption: identifier (
-// '=' (STRING_LITERAL | RAW_STRING_LITERAL))?; configurationAll: 'all' '(' configurationPredicateList? ')';
-// configurationAny: 'any' '(' configurationPredicateList? ')'; configurationNot: 'not' '(' configurationPredicate ')';
+// ****************** defined for Move language ****************** //
 
-//configurationPredicateList
-// : configurationPredicate (',' configurationPredicate)* ','? ; cfgAttribute: 'cfg' '(' configurationPredicate ')';
-// cfgAttrAttribute: 'cfg_attr' '(' configurationPredicate ',' cfgAttrs? ')'; cfgAttrs: attr (',' attr)* ','?;
-
-// 6
 item
    : outerAttribute* (visItem | macroItem)
    ;
 visItem
    : visibility?
    (
-      module
-      | externCrate
-      | useDeclaration
-      | function_
-      | typeAlias
-      | struct_
-      | enumeration
-      | union_
-      | constantItem
-      | staticItem
-      | trait_
-      | implementation
-      | externBlock
+      function_
+//      module
+//      | externCrate
+//      | useDeclaration
+//      | function_
+//      | typeAlias
+//      | struct_
+//      | enumeration
+//      | union_
+//      | constantItem
+//      | staticItem
+//      | trait_
+//      | implementation
+//      | externBlock
    )
    ;
+   visibility
+   : ('public' | 'public(friend)' | 'public(script)')
+   ;
+   function_
+   : functionQualifiers 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
+      (blockExpression | ';')
+   ;
+
+// ************************** Rust parser ************************** //
 macroItem
    : macroInvocationSemi
    | macroRulesDefinition
@@ -169,13 +171,12 @@ useTree
    ;
 
 // 6.4
+/*
 function_
-   : functionVisibility functionQualifiers 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
+   : functionQualifiers 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
       (blockExpression | ';')
    ;
-functionVisibility
-   :   ('public' | 'public(friend)')?
-   ;
+*/
 functionQualifiers
    : 'const'? 'async'? 'unsafe'? ('extern' abi?)?
    ;
@@ -958,10 +959,6 @@ typePathInputs
    ;
 
 // 12.6
-visibility
-   : 'pub' ('(' ( 'crate' | 'self' | 'super' | 'in' simplePath) ')')?
-   ;
-
 // technical
 identifier
    : NON_KEYWORD_IDENTIFIER
@@ -988,7 +985,7 @@ keyword
    | KW_MOD
    | KW_MOVE
    | KW_MUT
-   | KW_PUB
+//   | KW_PUB
    | KW_REF
    | KW_RETURN
    | KW_SELFVALUE
@@ -1008,6 +1005,7 @@ keyword
    | KW_FUN
    | KW_PUBLIC
    | KW_PUBLIC_FRIEND
+   | KW_PUBLIC_SCRIPT
 
    // 2018+
    | KW_ASYNC
