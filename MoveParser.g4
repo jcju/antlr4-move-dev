@@ -26,13 +26,13 @@ options
 // entry point
 // 4
 crate
-   : innerAttribute* item* EOF
+   : item* EOF
    ;
 
 // ****************** defined for Move language ****************** //
 
 item
-   : outerAttribute* (visItem | macroItem)
+   :  (visItem)
    ;
 visItem
    : visibility?
@@ -67,17 +67,17 @@ genericParams
    : '<' ((genericParam ',')* genericParam ','? )?'>'
    ;
 genericParam
-   : outerAttribute*
+   : 
    (
       lifetimeParam
       | typeParam
       | constParam
    );
 lifetimeParam
-   : outerAttribute? LIFETIME_OR_LABEL (':' lifetimeBounds)?
+   : LIFETIME_OR_LABEL (':' lifetimeBounds)?
    ;
 typeParam
-   : outerAttribute? identifier (':' typeParamBounds?)? ('=' type_)?
+   : identifier (':' typeParamBounds?)? ('=' type_)?
    ;
 constParam
    : 'const' identifier ':' type_
@@ -88,7 +88,7 @@ functionParameters
    | (selfParam ',')? functionParam (',' functionParam)* ','?
    ;
 selfParam
-   : outerAttribute* (shorthandSelf | typedSelf)
+   :  (shorthandSelf | typedSelf)
    ;
 shorthandSelf
    : ('&' lifetime?)? 'mut'? 'self'
@@ -97,7 +97,7 @@ typedSelf
    : 'mut'? 'self' ':' type_
    ;
 functionParam
-   : outerAttribute* (functionParamPattern | '...' | type_)
+   :  (functionParamPattern | '...' | type_)
    ;
 functionParamPattern
    : pattern ':' (type_ | '...')
@@ -107,7 +107,7 @@ functionReturnType
    ;
 
 // ************************** Rust parser ************************** //
-
+/*
 // 3
 macroInvocation
    : simplePath '!' delimTokenTree
@@ -190,10 +190,10 @@ macroItem
    : macroInvocationSemi
    | macroRulesDefinition
    ;
-
+*/
 // 6.1
 module
-   : 'unsafe'? 'mod' identifier (';' | '{' innerAttribute* item* '}')
+   : 'unsafe'? 'mod' identifier (';' | '{' item* '}')
    ;
 
 // 6.2
@@ -247,13 +247,13 @@ structFields
    : structField (',' structField)* ','?
    ;
 structField
-   : outerAttribute* visibility? identifier ':' type_
+   :  visibility? identifier ':' type_
    ;
 tupleFields
    : tupleField (',' tupleField)* ','?
    ;
 tupleField
-   : outerAttribute* visibility? type_
+   :  visibility? type_
    ;
 
 // 6.7
@@ -264,7 +264,7 @@ enumItems
    : enumItem (',' enumItem)* ','?
    ;
 enumItem
-   : outerAttribute* visibility? identifier
+   :  visibility? identifier
    (
       enumItemTuple
       | enumItemStruct
@@ -297,6 +297,7 @@ staticItem
    ;
 
 // 6.11
+/*
 trait_
    : 'unsafe'? 'trait' identifier genericParams? (':' typeParamBounds?)? whereClause? '{' innerAttribute* associatedItem* '}'
    ;
@@ -312,14 +313,14 @@ inherentImpl
 traitImpl
    : 'unsafe'? 'impl' genericParams? '!'? typePath 'for' type_ whereClause? '{' innerAttribute* associatedItem* '}'
    ;
-
+*/
 // 6.13
 /*
 externBlock
    : 'unsafe'? 'extern' abi? '{' innerAttribute* externalItem* '}'
    ;
 externalItem
-   : outerAttribute*
+   : 
    (
       macroInvocationSemi
       | visibility? ( staticItem | function_)
@@ -346,10 +347,10 @@ typeBoundWhereClauseItem
 forLifetimes
    : 'for' genericParams
    ;
-
+/*
 // 6.15
 associatedItem
-   : outerAttribute*
+   : 
    (
       macroInvocationSemi
       | visibility? ( typeAlias | constantItem | function_ )
@@ -370,15 +371,7 @@ attrInput
    : delimTokenTree
    | '=' literalExpression
    ; // w/o suffix
-
-//metaItem
-// : simplePath ( '=' literalExpression //w | '(' metaSeq ')' )? ; metaSeq: metaItemInner (',' metaItemInner)* ','?;
-// metaItemInner: metaItem | literalExpression; // w
-
-//metaWord: identifier; metaNameValueStr: identifier '=' ( STRING_LITERAL | RAW_STRING_LITERAL); metaListPaths:
-// identifier '(' ( simplePath (',' simplePath)* ','?)? ')'; metaListIdents: identifier '(' ( identifier (','
-// identifier)* ','?)? ')'; metaListNameValueStr : identifier '(' (metaNameValueStr ( ',' metaNameValueStr)* ','?)? ')'
-// ;
+*/
 
 // 8
 statement
@@ -386,11 +379,11 @@ statement
    | item
    | letStatement
    | expressionStatement
-   | macroInvocationSemi
+//   | macroInvocationSemi
    ;
 
 letStatement
-   : outerAttribute* 'let' patternNoTopAlt (':' type_)? ('=' expression)? ';'
+   :  'let' patternNoTopAlt (':' type_)? ('=' expression)? ';'
    ;
 
 expressionStatement
@@ -400,8 +393,9 @@ expressionStatement
 
 // 8.2
 expression
-   : outerAttribute+ expression                         # AttributedExpression // technical, remove left recursive
-   | literalExpression                                  # LiteralExpression_
+   : 
+//   outerAttribute+ expression                         # AttributedExpression // technical, remove left recursive
+     literalExpression                                  # LiteralExpression_
    | pathExpression                                     # PathExpression_
    | expression '.' pathExprSegment '(' callParams? ')' # MethodCallExpression   // 8.2.10
    | expression '.' identifier                          # FieldExpression  // 8.2.11
@@ -432,14 +426,14 @@ expression
    | 'continue' LIFETIME_OR_LABEL? expression?          # ContinueExpression  // 8.2.13
    | 'break' LIFETIME_OR_LABEL? expression?             # BreakExpression  // 8.2.13
    | 'return' expression?                               # ReturnExpression // 8.2.17
-   | '(' innerAttribute* expression ')'                 # GroupedExpression   // 8.2.5
-   | '[' innerAttribute* arrayElements? ']'             # ArrayExpression  // 8.2.6
-   | '(' innerAttribute* tupleElements? ')'             # TupleExpression  // 8.2.7
+   | '(' expression ')'                                 # GroupedExpression   // 8.2.5
+   | '[' arrayElements? ']'                             # ArrayExpression  // 8.2.6
+   | '(' tupleElements? ')'                             # TupleExpression  // 8.2.7
    | structExpression                                   # StructExpression_   // 8.2.8
    | enumerationVariantExpression                       # EnumerationVariantExpression_
    | closureExpression                                  # ClosureExpression_  // 8.2.12
    | expressionWithBlock                                # ExpressionWithBlock_
-   | macroInvocation                                    # MacroInvocationAsExpression
+//   | macroInvocation                                    # MacroInvocationAsExpression
    ;
 
 comparisonOperator
@@ -465,8 +459,9 @@ compoundAssignOperator
    ;
 
 expressionWithBlock
-   : outerAttribute+ expressionWithBlock // technical
-   | blockExpression
+   : 
+//   outerAttribute+ expressionWithBlock // technical
+     blockExpression
    | asyncBlockExpression
    | unsafeBlockExpression
    | loopExpression
@@ -497,7 +492,7 @@ pathExpression
 
 // 8.2.3
 blockExpression
-   : '{' innerAttribute* statements? '}'
+   : '{' statements? '}'
    ;
 statements
    : statement+ expression?
@@ -532,20 +527,19 @@ structExpression
    | structExprUnit
    ;
 structExprStruct
-   : pathInExpression '{' innerAttribute* (structExprFields | structBase)? '}'
+   : pathInExpression '{' (structExprFields | structBase)? '}'
    ;
 structExprFields
    : structExprField (',' structExprField)* (',' structBase | ','?)
    ;
-// outerAttribute here is not in doc
 structExprField
-   : outerAttribute* (identifier | (identifier | tupleIndex) ':' expression)
+   :  (identifier | (identifier | tupleIndex) ':' expression)
    ;
 structBase
    : '..' expression
    ;
 structExprTuple
-   : pathInExpression '(' innerAttribute* (expression ( ',' expression)* ','?)? ')'
+   : pathInExpression '(' (expression ( ',' expression)* ','?)? ')'
    ;
 structExprUnit
    : pathInExpression
@@ -590,7 +584,7 @@ closureParameters
    : closureParam (',' closureParam)* ','?
    ;
 closureParam
-   : outerAttribute* pattern (':' type_)?
+   :  pattern (':' type_)?
    ;
 
 // 8.2.13
@@ -635,7 +629,7 @@ ifLetExpression
 
 // 8.2.16
 matchExpression
-   : 'match' expression '{' innerAttribute* matchArms? '}'
+   : 'match' expression '{' matchArms? '}'
    ;
 matchArms
    : (matchArm '=>' matchArmExpression)* matchArm '=>' expression ','?
@@ -645,7 +639,7 @@ matchArmExpression
    | expressionWithBlock ','?
    ;
 matchArm
-   : outerAttribute* pattern matchArmGuard?
+   :  pattern matchArmGuard?
    ;
 
 matchArmGuard
@@ -673,7 +667,7 @@ patternWithoutRange
    | groupedPattern
    | slicePattern
    | pathPattern
-   | macroInvocation
+//   | macroInvocation
    ;
 
 literalPattern
@@ -724,7 +718,7 @@ structPatternFields
    : structPatternField (',' structPatternField)*
    ;
 structPatternField
-   : outerAttribute*
+   : 
    (
       tupleIndex ':' pattern
       | identifier ':' pattern
@@ -732,7 +726,7 @@ structPatternField
    )
    ;
 structPatternEtCetera
-   : outerAttribute* '..'
+   :  '..'
    ;
 tupleStructPattern
    : pathInExpression '(' tupleStructItems? ')'
@@ -782,7 +776,7 @@ typeNoBounds
    | inferredType
    | qualifiedPathInType
 //   | bareFunctionType
-   | macroInvocation
+//   | macroInvocation
    ;
 parenthesizedType
    : '(' type_ ')'
@@ -835,10 +829,10 @@ maybeNamedFunctionParameters
    : maybeNamedParam (',' maybeNamedParam)* ','?
    ;
 maybeNamedParam
-   : outerAttribute* ((identifier | '_') ':')? type_
+   :  ((identifier | '_') ':')? type_
    ;
 maybeNamedFunctionParametersVariadic
-   : (maybeNamedParam ',')* maybeNamedParam ',' outerAttribute* '...'
+   : (maybeNamedParam ',')* maybeNamedParam ','  '...'
    ;
 */
 // 10.1.15
