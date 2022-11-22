@@ -135,90 +135,6 @@ useTree
    ;
 
 // ************************** Rust parser ************************** //
-/*
-// 3
-macroInvocation
-   : simplePath '!' delimTokenTree
-   ;
-delimTokenTree
-   : '(' tokenTree* ')'
-   | '[' tokenTree* ']'
-   | '{' tokenTree* '}'
-   ;
-tokenTree
-   : tokenTreeToken+
-   | delimTokenTree
-   ;
-tokenTreeToken
-   : macroIdentifierLikeToken
-   | macroLiteralToken
-   | macroPunctuationToken
-   | macroRepOp
-   | '$'
-   ;
-
-macroInvocationSemi
-   : simplePath '!' '(' tokenTree* ')' ';'
-   | simplePath '!' '[' tokenTree* ']' ';'
-   | simplePath '!' '{' tokenTree* '}'
-   ;
-
-// 3.1
-macroRulesDefinition
-   : 'macro_rules' '!' identifier macroRulesDef
-   ;
-macroRulesDef
-   : '(' macroRules ')' ';'
-   | '[' macroRules ']' ';'
-   | '{' macroRules '}'
-   ;
-macroRules
-   : macroRule (';' macroRule)* ';'?
-   ;
-macroRule
-   : macroMatcher '=>' macroTranscriber
-   ;
-macroMatcher
-   : '(' macroMatch* ')'
-   | '[' macroMatch* ']'
-   | '{' macroMatch* '}'
-   ;
-macroMatch
-   : macroMatchToken+
-   | macroMatcher
-   | '$' (identifier | 'self') ':' macroFragSpec
-   | '$' '(' macroMatch+ ')' macroRepSep? macroRepOp
-   ;
-macroMatchToken
-   : macroIdentifierLikeToken
-   | macroLiteralToken
-   | macroPunctuationToken
-   | macroRepOp
-   ;
-macroFragSpec
-   : identifier // do validate here is wasting token
-   ;
-macroRepSep
-   : macroIdentifierLikeToken
-   | macroLiteralToken
-   | macroPunctuationToken
-   | '$'
-   ;
-macroRepOp
-   : '*'
-   | '+'
-   | '?'
-   ;
-macroTranscriber
-   : delimTokenTree
-   ;
-
-
-macroItem
-   : macroInvocationSemi
-   | macroRulesDefinition
-   ;
-*/
 
 // 6.2
 /*
@@ -232,21 +148,6 @@ crateRef
 asClause
    : 'as' (identifier | '_')
    ;
-
-// 6.3
-
-
-// 6.4
-/*
-functionItem
-   : functionQualifiers 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
-      (blockExpression | ';')
-   ;
-*/
-
-
-// 6.5
-
 
 // 6.6
 struct_
@@ -310,38 +211,6 @@ staticItem
    : 'static' 'mut'? identifier ':' type_ ('=' expression)? ';'
    ;
 
-// 6.11
-/*
-trait_
-   : 'unsafe'? 'trait' identifier genericParams? (':' typeParamBounds?)? whereClause? '{' innerAttribute* associatedItem* '}'
-   ;
-
-// 6.12
-implementation
-   : inherentImpl
-   | traitImpl
-   ;
-inherentImpl
-   : 'impl' genericParams? type_ whereClause? '{' innerAttribute* associatedItem* '}'
-   ;
-traitImpl
-   : 'unsafe'? 'impl' genericParams? '!'? typePath 'for' type_ whereClause? '{' innerAttribute* associatedItem* '}'
-   ;
-*/
-// 6.13
-/*
-externBlock
-   : 'unsafe'? 'extern' abi? '{' innerAttribute* externalItem* '}'
-   ;
-externalItem
-   : 
-   (
-      macroInvocationSemi
-      | visibility? ( staticItem | functionItem)
-   )
-   ;
-*/
-
 // 6.14
 
 
@@ -361,31 +230,6 @@ typeBoundWhereClauseItem
 forLifetimes
    : 'for' genericParams
    ;
-/*
-// 6.15
-associatedItem
-   : 
-   (
-      macroInvocationSemi
-      | visibility? ( typeAlias | constantItem | functionItem )
-   )
-   ;
-
-// 7
-innerAttribute
-   : '#' '!' '[' attr ']'
-   ;
-outerAttribute
-   : '#' '[' attr ']'
-   ;
-attr
-   : simplePath attrInput?
-   ;
-attrInput
-   : delimTokenTree
-   | '=' literalExpression
-   ; // w/o suffix
-*/
 
 // 8
 statement
@@ -393,7 +237,6 @@ statement
    | item
    | letStatement
    | expressionStatement
-//   | macroInvocationSemi
    ;
 
 letStatement
@@ -447,7 +290,6 @@ expression
    | enumerationVariantExpression                       # EnumerationVariantExpression_
    | closureExpression                                  # ClosureExpression_  // 8.2.12
    | expressionWithBlock                                # ExpressionWithBlock_
-//   | macroInvocation                                    # MacroInvocationAsExpression
    ;
 
 comparisonOperator
@@ -474,7 +316,6 @@ compoundAssignOperator
 
 expressionWithBlock
    : 
-//   outerAttribute+ expressionWithBlock // technical
      blockExpression
    | asyncBlockExpression
    | unsafeBlockExpression
@@ -681,7 +522,6 @@ patternWithoutRange
    | groupedPattern
    | slicePattern
    | pathPattern
-//   | macroInvocation
    ;
 
 literalPattern
@@ -790,7 +630,6 @@ typeNoBounds
    | inferredType
    | qualifiedPathInType
 //   | bareFunctionType
-//   | macroInvocation
    ;
 parenthesizedType
    : '(' type_ ')'
@@ -975,7 +814,6 @@ typePathInputs
 identifier
    : NON_KEYWORD_IDENTIFIER
    | RAW_IDENTIFIER
-   | 'macro_rules'
    ;
 keyword
    : KW_AS
@@ -1041,62 +879,7 @@ keyword
    | KW_UNION
    | KW_STATICLIFETIME
    ;
-macroIdentifierLikeToken
-   : keyword
-   | identifier
-   | KW_MACRORULES
-   | KW_UNDERLINELIFETIME
-   | KW_DOLLARCRATE
-   | LIFETIME_OR_LABEL
-   ;
-macroLiteralToken
-   : literalExpression
-   ;
-// macroDelimiterToken: '{' | '}' | '[' | ']' | '(' | ')';
-macroPunctuationToken
-   : '-'
-   //| '+' | '*'
-   | '/'
-   | '%'
-   | '^'
-   | '!'
-   | '&'
-   | '|'
-   | '&&'
-   | '||'
-   // already covered by '<' and '>' in macro | shl | shr
-   | '+='
-   | '-='
-   | '*='
-   | '/='
-   | '%='
-   | '^='
-   | '&='
-   | '|='
-   | '<<='
-   | '>>='
-   | '='
-   | '=='
-   | '!='
-   | '>'
-   | '<'
-   | '>='
-   | '<='
-   | '@'
-   | '_'
-   | '.'
-   | '..'
-   | '...'
-   | '..='
-   | ','
-   | ';'
-   | ':'
-   | '::'
-   | '->'
-   | '=>'
-   | '#'
-   //| '$' | '?'
-   ;
+
 
 // LA can be removed, legal rust code still pass but the cost is `let c = a < < b` will pass... i hope antlr5 can add
 // some new syntax? dsl? for these stuff so i needn't write it in (at least) 5 language
