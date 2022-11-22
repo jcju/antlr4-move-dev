@@ -41,7 +41,6 @@ visItem
 //      module
 //      | externCrate
 //      | useDeclaration
-//      | function_
 //      | typeAlias
 //      | struct_
 //      | enumeration
@@ -103,7 +102,7 @@ functionParamPattern
    : pattern ':' (type_ | '...')
    ;
 functionReturnType
-   : '->' type_
+   : ':' type_
    ;
 
 // ************************** Rust parser ************************** //
