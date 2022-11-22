@@ -121,7 +121,7 @@ acquireAnnotation
 
 // normal Items
 typesItem
-   : 'type' identifier genericParams? whereClause? ('=' type_)? ';'
+   : 'type' identifier genericParams? ('=' type_)? ';'
    ;
 constantItem
    : 'const' (identifier | '_') ':' type_ ('=' expression)? ';'
@@ -155,10 +155,10 @@ struct_
    | tupleStruct
    ;
 structStruct
-   : 'struct' identifier genericParams? whereClause? ('{' structFields? '}' | ';')
+   : 'struct' identifier genericParams? ('{' structFields? '}' | ';')
    ;
 tupleStruct
-   : 'struct' identifier genericParams? '(' tupleFields? ')' whereClause? ';'
+   : 'struct' identifier genericParams? '(' tupleFields? ')' ';'
    ;
 structFields
    : structField (',' structField)* ','?
@@ -175,7 +175,7 @@ tupleField
 
 // 6.7
 enumeration
-   : 'enum' identifier genericParams? whereClause? '{' enumItems? '}'
+   : 'enum' identifier genericParams? '{' enumItems? '}'
    ;
 enumItems
    : enumItem (',' enumItem)* ','?
@@ -200,11 +200,8 @@ enumItemDiscriminant
 
 // 6.8
 union_
-   : 'union' identifier genericParams? whereClause? '{' structFields '}'
+   : 'union' identifier genericParams? '{' structFields '}'
    ;
-
-// 6.9
-
 
 // 6.10
 staticItem
@@ -212,21 +209,6 @@ staticItem
    ;
 
 // 6.14
-
-
-whereClause
-   : 'where' (whereClauseItem ',')* whereClauseItem?
-   ;
-whereClauseItem
-   : lifetimeWhereClauseItem
-   | typeBoundWhereClauseItem
-   ;
-lifetimeWhereClauseItem
-   : lifetime ':' lifetimeBounds
-   ;
-typeBoundWhereClauseItem
-   : forLifetimes? type_ ':' typeParamBounds?
-   ;
 forLifetimes
    : 'for' genericParams
    ;
@@ -663,31 +645,6 @@ rawPointerType
    : '*' ('mut' | 'const') typeNoBounds
    ;
 
-// 10.1.14
-/*
-bareFunctionType
-   : forLifetimes? functionTypeQualifiers 'fn' '(' functionParametersMaybeNamedVariadic? ')' bareFunctionReturnType?
-   ;
-functionTypeQualifiers
-   : 'unsafe'? ('extern' abi?)?
-   ;
-bareFunctionReturnType
-   : '->' typeNoBounds
-   ;
-functionParametersMaybeNamedVariadic
-   : maybeNamedFunctionParameters
-   | maybeNamedFunctionParametersVariadic
-   ;
-maybeNamedFunctionParameters
-   : maybeNamedParam (',' maybeNamedParam)* ','?
-   ;
-maybeNamedParam
-   :  ((identifier | '_') ':')? type_
-   ;
-maybeNamedFunctionParametersVariadic
-   : (maybeNamedParam ',')* maybeNamedParam ','  '...'
-   ;
-*/
 // 10.1.15
 traitObjectType
    : 'dyn'? typeParamBounds
@@ -814,70 +771,6 @@ typePathInputs
 identifier
    : NON_KEYWORD_IDENTIFIER
    | RAW_IDENTIFIER
-   ;
-keyword
-   : KW_AS
-   | KW_BREAK
-   | KW_CONST
-   | KW_CONTINUE
-   | KW_CRATE
-   | KW_ELSE
-   | KW_ENUM
-   | KW_EXTERN
-   | KW_FALSE
-   | KW_FOR
-   | KW_IF
-   | KW_IMPL
-   | KW_IN
-   | KW_LET
-   | KW_LOOP
-   | KW_MATCH
-   | KW_MOVE
-   | KW_MUT
-//   | KW_PUB
-   | KW_REF
-   | KW_RETURN
-   | KW_SELFVALUE
-   | KW_SELFTYPE
-   | KW_STATIC
-   | KW_STRUCT
-   | KW_SUPER
-   | KW_TRAIT
-   | KW_TRUE
-   | KW_TYPE
-   | KW_UNSAFE
-   | KW_USE
-   | KW_WHERE
-   | KW_WHILE
-
-   // move
-   | KW_FUN
-   | KW_PUBLIC
-   | KW_PUBLIC_FRIEND
-   | KW_PUBLIC_SCRIPT
-   | KW_MODULE
-   | KW_SCRIPT
-   
-   // 2018+
-   | KW_ASYNC
-   | KW_AWAIT
-   | KW_DYN
-   // reserved
-   | KW_ABSTRACT
-   | KW_BECOME
-   | KW_BOX
-   | KW_DO
-   | KW_FINAL
-   | KW_MACRO
-   | KW_OVERRIDE
-   | KW_PRIV
-   | KW_TYPEOF
-   | KW_UNSIZED
-   | KW_VIRTUAL
-   | KW_YIELD
-   | KW_TRY
-   | KW_UNION
-   | KW_STATICLIFETIME
    ;
 
 
