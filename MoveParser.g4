@@ -29,6 +29,85 @@ crate
    : innerAttribute* item* EOF
    ;
 
+// ****************** defined for Move language ****************** //
+
+item
+   : outerAttribute* (visItem | macroItem)
+   ;
+visItem
+   : visibility?
+   (
+      function_
+//      module
+//      | externCrate
+//      | useDeclaration
+//      | function_
+//      | typeAlias
+//      | struct_
+//      | enumeration
+//      | union_
+//      | constantItem
+//      | staticItem
+//      | trait_
+//      | implementation
+//      | externBlock
+   )
+   ;
+visibility
+   : ('public' | 'public(friend)' | 'public(script)')
+   ;   
+function_
+   : entryModifier 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
+      (blockExpression | ';')
+   ;
+entryModifier
+   : 'entry'?
+   ;
+genericParams
+   : '<' ((genericParam ',')* genericParam ','? )?'>'
+   ;
+genericParam
+   : outerAttribute*
+   (
+      lifetimeParam
+      | typeParam
+      | constParam
+   );
+lifetimeParam
+   : outerAttribute? LIFETIME_OR_LABEL (':' lifetimeBounds)?
+   ;
+typeParam
+   : outerAttribute? identifier (':' typeParamBounds?)? ('=' type_)?
+   ;
+constParam
+   : 'const' identifier ':' type_
+   ;
+
+functionParameters
+   : selfParam ','?
+   | (selfParam ',')? functionParam (',' functionParam)* ','?
+   ;
+selfParam
+   : outerAttribute* (shorthandSelf | typedSelf)
+   ;
+shorthandSelf
+   : ('&' lifetime?)? 'mut'? 'self'
+   ;
+typedSelf
+   : 'mut'? 'self' ':' type_
+   ;
+functionParam
+   : outerAttribute* (functionParamPattern | '...' | type_)
+   ;
+functionParamPattern
+   : pattern ':' (type_ | '...')
+   ;
+functionReturnType
+   : '->' type_
+   ;
+
+// ************************** Rust parser ************************** //
+
 // 3
 macroInvocation
    : simplePath '!' delimTokenTree
@@ -106,43 +185,7 @@ macroTranscriber
    : delimTokenTree
    ;
 
-// ****************** defined for Move language ****************** //
 
-item
-   : outerAttribute* (visItem | macroItem)
-   ;
-visItem
-   : visibility?
-   (
-      function_
-//      module
-//      | externCrate
-//      | useDeclaration
-//      | function_
-//      | typeAlias
-//      | struct_
-//      | enumeration
-//      | union_
-//      | constantItem
-//      | staticItem
-//      | trait_
-//      | implementation
-//      | externBlock
-   )
-   ;
-visibility
-   : ('public' | 'public(friend)' | 'public(script)')
-   ;
-function_
-   : entryModifier 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
-      (blockExpression | ';')
-   ;
-
-entryModifier
-   : 'entry'?
-   ;
-
-// ************************** Rust parser ************************** //
 macroItem
    : macroInvocationSemi
    | macroRulesDefinition
@@ -183,28 +226,6 @@ function_
    ;
 */
 
-functionParameters
-   : selfParam ','?
-   | (selfParam ',')? functionParam (',' functionParam)* ','?
-   ;
-selfParam
-   : outerAttribute* (shorthandSelf | typedSelf)
-   ;
-shorthandSelf
-   : ('&' lifetime?)? 'mut'? 'self'
-   ;
-typedSelf
-   : 'mut'? 'self' ':' type_
-   ;
-functionParam
-   : outerAttribute* (functionParamPattern | '...' | type_)
-   ;
-functionParamPattern
-   : pattern ':' (type_ | '...')
-   ;
-functionReturnType
-   : '->' type_
-   ;
 
 // 6.5
 typeAlias
@@ -307,25 +328,7 @@ externalItem
 */
 
 // 6.14
-genericParams
-   : '<' ((genericParam ',')* genericParam ','? )?'>'
-   ;
-genericParam
-   : outerAttribute*
-   (
-      lifetimeParam
-      | typeParam
-      | constParam
-   );
-lifetimeParam
-   : outerAttribute? LIFETIME_OR_LABEL (':' lifetimeBounds)?
-   ;
-typeParam
-   : outerAttribute? identifier (':' typeParamBounds?)? ('=' type_)?
-   ;
-constParam
-   : 'const' identifier ':' type_
-   ;
+
 
 whereClause
    : 'where' (whereClauseItem ',')* whereClauseItem?
