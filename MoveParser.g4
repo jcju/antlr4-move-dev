@@ -130,12 +130,16 @@ visItem
 //      | externBlock
    )
    ;
-   visibility
+visibility
    : ('public' | 'public(friend)' | 'public(script)')
    ;
-   function_
-   : functionQualifiers 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
+function_
+   : entryModifier 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? whereClause?
       (blockExpression | ';')
+   ;
+
+entryModifier
+   : 'entry'?
    ;
 
 // ************************** Rust parser ************************** //
@@ -150,9 +154,10 @@ module
    ;
 
 // 6.2
+/*
 externCrate
    : 'extern' 'crate' crateRef asClause? ';'
-   ;
+   ; */
 crateRef
    : identifier
    | 'self'
@@ -177,13 +182,7 @@ function_
       (blockExpression | ';')
    ;
 */
-functionQualifiers
-   : 'const'? 'async'? 'unsafe'? ('extern' abi?)?
-   ;
-abi
-   : STRING_LITERAL
-   | RAW_STRING_LITERAL
-   ;
+
 functionParameters
    : selfParam ','?
    | (selfParam ',')? functionParam (',' functionParam)* ','?
@@ -294,6 +293,7 @@ traitImpl
    ;
 
 // 6.13
+/*
 externBlock
    : 'unsafe'? 'extern' abi? '{' innerAttribute* externalItem* '}'
    ;
@@ -304,6 +304,7 @@ externalItem
       | visibility? ( staticItem | function_)
    )
    ;
+*/
 
 // 6.14
 genericParams

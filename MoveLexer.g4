@@ -27,6 +27,8 @@ KW_FUN: 'fun';
 KW_PUBLIC: 'public';
 KW_PUBLIC_FRIEND: 'public(friend)';
 KW_PUBLIC_SCRIPT: 'public(script)';
+KW_ENTRY: 'entry';
+
 
 // https://doc.rust-lang.org/reference/keywords.html strict
 KW_AS: 'as';
