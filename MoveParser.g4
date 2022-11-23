@@ -130,7 +130,7 @@ constantItem
    : 'const' (identifier | '_') ':' type_ ('=' expression)? ';'
    ;
 useItem
-   : 'use' useTree ';'
+   : 'use' (address '::')? useTree ';'
    ;
 useTree
    : (simplePath? '::')? ('*' | '{' ( useTree (',' useTree)* ','?)? '}')
