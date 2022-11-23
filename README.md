@@ -21,12 +21,18 @@ grun Move crate -gui < examples/hello.move
 
 | Status | Test file          | Notes                                                           |
 | :-: | ------------------ | ----------------------------------------------------------- |
-| -  | hello.move | not tested yet |
+| ✅  | hello.move | PASSED |
 | ✅  | visibility_func.move | PASSED |
 | ✅  | func_entry_modifier.move | PASSED |
 | ✅  | func_multi_return_value.move | PASSED |
 | ✅  | func_acquires.move | PASSED |
 | ✅  | module_basic.move | PASSED |
-| - | ---------------------------------------- |                                                                             |
+| ✅  | module_address_friend.move | PASSED |    
+| ✅  | script_basic.move | PASSED | 
+| ✅  | module_address_in_useItem.move | PASSED |    
+| ✅  | script_address_evaluation.move | PASSED |    
+| ✅  | expr_with_address.move | PASSED |
+| ✅  | let_assign_address.move | PASSED |
+| ✅  | -- |  |
 | - | BasicCoin | not tested yet |
 | ❌  | place_holder            | test: FAIL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |

@@ -72,7 +72,7 @@ public abstract class MoveLexerBase extends Lexer{
             case MoveLexer.RSQUAREBRACKET:
             case MoveLexer.RPAREN:
 
-            case MoveLexer.KW_AWAIT:
+//            case MoveLexer.KW_AWAIT:
 
             case MoveLexer.NON_KEYWORD_IDENTIFIER:
             case MoveLexer.RAW_IDENTIFIER:

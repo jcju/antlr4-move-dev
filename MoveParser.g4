@@ -49,10 +49,7 @@ visItem
    (
       functionItem
 //      | struct_
-//      | enumeration
-//      | union_
 //      | staticItem
-//      | implementation
    )
    ;
 normalItem
@@ -165,13 +162,51 @@ pathIdentSegment
    | '$crate'
    ;
 
+
+expression
+   : 
+     literalExpression                                  # LiteralExpression_
+   | pathExpression                                     # PathExpression_
+   | expression '.' pathExprSegment '(' callParams? ')' # MethodCallExpression   // 8.2.10
+   | expression '.' identifier                          # FieldExpression  // 8.2.11
+   | expression '.' tupleIndex                          # TupleIndexingExpression   // 8.2.7
+   | expression '(' callParams? ')'                     # CallExpression   // 8.2.9
+   | expression '[' expression ']'                      # IndexExpression  // 8.2.6
+   | expression '?'                                     # ErrorPropagationExpression   // 8.2.4
+   | ('&' | '&&') 'mut'? expression                     # BorrowExpression // 8.2.4
+   | '*' expression                                     # DereferenceExpression  // 8.2.4
+   | ('-' | '!') expression                             # NegationExpression  // 8.2.4
+   | expression 'as' typeNoBounds                       # TypeCastExpression  // 8.2.4
+   | expression ('*' | '/' | '%') expression            # ArithmeticOrLogicalExpression   // 8.2.4
+   | expression ('+' | '-') expression                  # ArithmeticOrLogicalExpression   // 8.2.4
+   | expression '&' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
+   | expression '^' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
+   | expression '|' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
+   | expression comparisonOperator expression           # ComparisonExpression   // 8.2.4
+   | expression '&&' expression                         # LazyBooleanExpression  // 8.2.4
+   | expression '||' expression                         # LazyBooleanExpression  // 8.2.4
+   | expression '..' expression?                        # RangeExpression  // 8.2.14
+   | '..' expression?                                   # RangeExpression  // 8.2.14
+   | '..=' expression                                   # RangeExpression  // 8.2.14
+   | expression '..=' expression                        # RangeExpression  // 8.2.14
+   | expression '=' expression                          # AssignmentExpression   // 8.2.4
+   | expression compoundAssignOperator expression       # CompoundAssignmentExpression // 8.2.4
+   | 'continue' LIFETIME_OR_LABEL? expression?          # ContinueExpression  // 8.2.13
+   | 'break' LIFETIME_OR_LABEL? expression?             # BreakExpression  // 8.2.13
+   | 'return' expression?                               # ReturnExpression // 8.2.17
+   | '(' expression ')'                                 # GroupedExpression   // 8.2.5
+   | '[' arrayElements? ']'                             # ArrayExpression  // 8.2.6
+   | '(' tupleElements? ')'                             # TupleExpression  // 8.2.7
+   | structExpression                                   # StructExpression_   // 8.2.8
+   | enumerationVariantExpression                       # EnumerationVariantExpression_
+   | closureExpression                                  # ClosureExpression_  // 8.2.12
+   | expressionWithBlock                                # ExpressionWithBlock_
+   ;
+
+
 // ************************** Rust parser ************************** //
 
 // 6.2
-/*
-externCrate
-   : 'extern' 'crate' crateRef asClause? ';'
-   ; */
 crateRef
    : identifier
    | 'self'
@@ -205,34 +240,8 @@ tupleField
    ;
 
 // 6.7
-enumeration
-   : 'enum' identifier genericParams? '{' enumItems? '}'
-   ;
-enumItems
-   : enumItem (',' enumItem)* ','?
-   ;
-enumItem
-   :  visibility? identifier
-   (
-      enumItemTuple
-      | enumItemStruct
-      | enumItemDiscriminant
-   )?
-   ;
-enumItemTuple
-   : '(' tupleFields? ')'
-   ;
-enumItemStruct
-   : '{' structFields? '}'
-   ;
-enumItemDiscriminant
-   : '=' expression
-   ;
 
 // 6.8
-union_
-   : 'union' identifier genericParams? '{' structFields '}'
-   ;
 
 // 6.10
 staticItem
@@ -262,48 +271,6 @@ expressionStatement
    ;
 
 // 8.2
-expression
-   : 
-//   outerAttribute+ expression                         # AttributedExpression // technical, remove left recursive
-     literalExpression                                  # LiteralExpression_
-   | pathExpression                                     # PathExpression_
-   | expression '.' pathExprSegment '(' callParams? ')' # MethodCallExpression   // 8.2.10
-   | expression '.' identifier                          # FieldExpression  // 8.2.11
-   | expression '.' tupleIndex                          # TupleIndexingExpression   // 8.2.7
-   | expression '.' 'await'                             # AwaitExpression  // 8.2.18
-   | expression '(' callParams? ')'                     # CallExpression   // 8.2.9
-   | expression '[' expression ']'                      # IndexExpression  // 8.2.6
-   | expression '?'                                     # ErrorPropagationExpression   // 8.2.4
-   | ('&' | '&&') 'mut'? expression                     # BorrowExpression // 8.2.4
-   | '*' expression                                     # DereferenceExpression  // 8.2.4
-   | ('-' | '!') expression                             # NegationExpression  // 8.2.4
-   | expression 'as' typeNoBounds                       # TypeCastExpression  // 8.2.4
-   | expression ('*' | '/' | '%') expression            # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression ('+' | '-') expression                  # ArithmeticOrLogicalExpression   // 8.2.4
-//   | expression (shl | shr) expression                  # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression '&' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression '^' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression '|' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression comparisonOperator expression           # ComparisonExpression   // 8.2.4
-   | expression '&&' expression                         # LazyBooleanExpression  // 8.2.4
-   | expression '||' expression                         # LazyBooleanExpression  // 8.2.4
-   | expression '..' expression?                        # RangeExpression  // 8.2.14
-   | '..' expression?                                   # RangeExpression  // 8.2.14
-   | '..=' expression                                   # RangeExpression  // 8.2.14
-   | expression '..=' expression                        # RangeExpression  // 8.2.14
-   | expression '=' expression                          # AssignmentExpression   // 8.2.4
-   | expression compoundAssignOperator expression       # CompoundAssignmentExpression // 8.2.4
-   | 'continue' LIFETIME_OR_LABEL? expression?          # ContinueExpression  // 8.2.13
-   | 'break' LIFETIME_OR_LABEL? expression?             # BreakExpression  // 8.2.13
-   | 'return' expression?                               # ReturnExpression // 8.2.17
-   | '(' expression ')'                                 # GroupedExpression   // 8.2.5
-   | '[' arrayElements? ']'                             # ArrayExpression  // 8.2.6
-   | '(' tupleElements? ')'                             # TupleExpression  // 8.2.7
-   | structExpression                                   # StructExpression_   // 8.2.8
-   | enumerationVariantExpression                       # EnumerationVariantExpression_
-   | closureExpression                                  # ClosureExpression_  // 8.2.12
-   | expressionWithBlock                                # ExpressionWithBlock_
-   ;
 
 comparisonOperator
    : '=='
@@ -330,8 +297,6 @@ compoundAssignOperator
 expressionWithBlock
    : 
      blockExpression
-   | asyncBlockExpression
-   | unsafeBlockExpression
    | loopExpression
    | ifExpression
    | ifLetExpression
@@ -365,13 +330,6 @@ blockExpression
 statements
    : statement+ expression?
    | expression
-   ;
-
-asyncBlockExpression
-   : 'async' 'move'? blockExpression
-   ;
-unsafeBlockExpression
-   : 'unsafe' blockExpression
    ;
 
 // 8.2.6
@@ -626,13 +584,9 @@ pathPattern
 // 10.1
 type_
    : typeNoBounds
-   | implTraitType
-   | traitObjectType
    ;
 typeNoBounds
    : parenthesizedType
-   | implTraitTypeOneBound
-   | traitObjectTypeOneBound
    | typePath
    | tupleType
    | neverType
@@ -642,7 +596,6 @@ typeNoBounds
    | sliceType
    | inferredType
    | qualifiedPathInType
-//   | bareFunctionType
    ;
 parenthesizedType
    : '(' type_ ')'
@@ -677,18 +630,6 @@ rawPointerType
    ;
 
 // 10.1.15
-traitObjectType
-   : 'dyn'? typeParamBounds
-   ;
-traitObjectTypeOneBound
-   : 'dyn'? traitBound
-   ;
-implTraitType
-   : 'impl' typeParamBounds
-   ;
-implTraitTypeOneBound
-   : 'impl' traitBound
-   ;
 
 // 10.1.18
 inferredType
@@ -701,12 +642,9 @@ typeParamBounds
    ;
 typeParamBound
    : lifetime
-   | traitBound
+//   | traitBound
    ;
-traitBound
-   : '?'? forLifetimes? typePath
-   | '(' '?'? forLifetimes? typePath ')'
-   ;
+
 lifetimeBounds
    : (lifetime '+')* lifetime?
    ;

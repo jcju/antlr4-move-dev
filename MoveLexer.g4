@@ -37,19 +37,16 @@ KW_CONST: 'const';
 KW_CONTINUE: 'continue';
 KW_CRATE: 'crate';
 KW_ELSE: 'else';
-KW_ENUM: 'enum';
 KW_EXTERN: 'extern';
 KW_FALSE: 'false';
 KW_FOR: 'for';
 KW_IF: 'if';
-KW_IMPL: 'impl';
 KW_IN: 'in';
 KW_LET: 'let';
 KW_LOOP: 'loop';
 KW_MATCH: 'match';
 KW_MOVE: 'move';
 KW_MUT: 'mut';
-//KW_PUB: 'pub';
 KW_REF: 'ref';
 KW_RETURN: 'return';
 KW_SELFVALUE: 'self';
@@ -57,18 +54,13 @@ KW_SELFTYPE: 'Self';
 KW_STATIC: 'static';
 KW_STRUCT: 'struct';
 KW_SUPER: 'super';
-KW_TRAIT: 'trait';
 KW_TRUE: 'true';
 KW_TYPE: 'type';
-KW_UNSAFE: 'unsafe';
 KW_USE: 'use';
 KW_WHERE: 'where';
 KW_WHILE: 'while';
 
 // 2018+
-KW_ASYNC: 'async';
-KW_AWAIT: 'await';
-KW_DYN: 'dyn';
 
 // reserved
 KW_ABSTRACT: 'abstract';
@@ -88,7 +80,6 @@ KW_YIELD: 'yield';
 KW_TRY: 'try';
 
 // weak
-KW_UNION: 'union';
 KW_STATICLIFETIME: '\'static';
 
 KW_MACRORULES: 'macro_rules';
