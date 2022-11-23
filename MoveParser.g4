@@ -147,6 +147,22 @@ addressEvaluation
    : '@' address
    ;
 
+pathInExpression
+   : '::'? pathExprSegment ('::' pathExprSegment)*
+   ;
+pathExprSegment
+   : pathIdentSegment ('::' genericArgs)?
+   ;
+pathIdentSegment
+   : identifier
+   | addressEvaluation
+   | 'super'
+   | 'self'
+   | 'Self'
+   | 'crate'
+   | '$crate'
+   ;
+
 // ************************** Rust parser ************************** //
 
 // 6.2
@@ -710,21 +726,6 @@ simplePathSegment
    | '$crate'
    ;
 
-pathInExpression
-   : '::'? pathExprSegment ('::' pathExprSegment)*
-   ;
-pathExprSegment
-   : pathIdentSegment ('::' genericArgs)?
-   ;
-pathIdentSegment
-   : identifier
-   | addressEvaluation
-   | 'super'
-   | 'self'
-   | 'Self'
-   | 'crate'
-   | '$crate'
-   ;
 
 //TODO: let x : T<_>=something;
 genericArgs
