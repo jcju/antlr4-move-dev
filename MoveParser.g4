@@ -303,7 +303,6 @@ expression
    | enumerationVariantExpression                       # EnumerationVariantExpression_
    | closureExpression                                  # ClosureExpression_  // 8.2.12
    | expressionWithBlock                                # ExpressionWithBlock_
-   | address '::' expression                            # ExpressionWithAddress
    ;
 
 comparisonOperator
