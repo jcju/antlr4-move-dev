@@ -18,11 +18,8 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 lexer grammar MoveLexer
    ;
 
-options
-{
-   superClass = MoveLexerBase;
-}
-// Move - new added
+// ****************** defined for Move language ****************** //
+
 KW_FUN: 'fun';
 KW_PUBLIC: 'public';
 KW_PUBLIC_FRIEND: 'public(friend)';
@@ -182,11 +179,6 @@ BLOCK_COMMENT_OR_DOC
    ) -> channel (HIDDEN)
    ;
 
-SHEBANG: {this.SOF()}? '\ufeff'? '#!' ~[\r\n]* -> channel(HIDDEN);
-
-//ISOLATED_CR
-// : '\r' {_input.LA(1)!='\n'}// not followed with \n ;
-
 // whitespace https://doc.rust-lang.org/reference/whitespace.html
 WHITESPACE: [\p{Zs}] -> channel(HIDDEN);
 NEWLINE: ('\r\n' | [\r\n]) -> channel(HIDDEN);
@@ -256,7 +248,7 @@ HEX_LITERAL: '0x' '_'* HEX_DIGIT (HEX_DIGIT | '_')*;
 OCT_LITERAL: '0o' '_'* OCT_DIGIT (OCT_DIGIT | '_')*;
 
 BIN_LITERAL: '0b' '_'* [01] [01_]*;
-
+/*
 FLOAT_LITERAL
    : {this.floatLiteralPossible()}? (DEC_LITERAL '.' {this.floatDotPossible()}?
    | DEC_LITERAL
@@ -264,7 +256,7 @@ FLOAT_LITERAL
       '.' DEC_LITERAL
    )? FLOAT_EXPONENT? FLOAT_SUFFIX?)
    ;
-
+*/
 fragment INTEGER_SUFFIX
    : 'u8'
    | 'u16'
@@ -305,7 +297,6 @@ AND: '&';
 OR: '|';
 ANDAND: '&&';
 OROR: '||';
-//SHL: '<<'; SHR: '>>'; removed to avoid confusion in type parameter
 PLUSEQ: '+=';
 MINUSEQ: '-=';
 STAREQ: '*=';

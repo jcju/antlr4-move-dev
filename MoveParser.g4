@@ -21,10 +21,9 @@ parser grammar MoveParser
 options
 {
    tokenVocab = MoveLexer;
-   superClass = MoveParserBase;
 }
 // entry point
-// 4
+
 crate
    : moveModule EOF
    ;
@@ -249,7 +248,7 @@ expression
    | expression 'as' typeNoBounds                       # TypeCastExpression  // 8.2.4
    | expression ('*' | '/' | '%') expression            # ArithmeticOrLogicalExpression   // 8.2.4
    | expression ('+' | '-') expression                  # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression (shl | shr) expression                  # ArithmeticOrLogicalExpression   // 8.2.4
+//   | expression (shl | shr) expression                  # ArithmeticOrLogicalExpression   // 8.2.4
    | expression '&' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
    | expression '^' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
    | expression '|' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
@@ -316,7 +315,7 @@ literalExpression
    | BYTE_STRING_LITERAL
    | RAW_BYTE_STRING_LITERAL
    | INTEGER_LITERAL
-   | FLOAT_LITERAL
+//   | FLOAT_LITERAL
    | KW_TRUE
    | KW_FALSE
    ;
@@ -516,7 +515,7 @@ literalPattern
    | BYTE_STRING_LITERAL
    | RAW_BYTE_STRING_LITERAL
    | '-'? INTEGER_LITERAL
-   | '-'? FLOAT_LITERAL
+//   | '-'? FLOAT_LITERAL
    ;
 
 identifierPattern
@@ -537,7 +536,7 @@ rangePatternBound
    : CHAR_LITERAL
    | BYTE_LITERAL
    | '-'? INTEGER_LITERAL
-   | '-'? FLOAT_LITERAL
+//   | '-'? FLOAT_LITERAL
    | pathPattern
    ;
 referencePattern
@@ -771,15 +770,4 @@ typePathInputs
 identifier
    : NON_KEYWORD_IDENTIFIER
    | RAW_IDENTIFIER
-   ;
-
-
-// LA can be removed, legal rust code still pass but the cost is `let c = a < < b` will pass... i hope antlr5 can add
-// some new syntax? dsl? for these stuff so i needn't write it in (at least) 5 language
-
-shl
-   : '<' {this.next('<')}? '<'
-   ;
-shr
-   : '>' {this.next('>')}? '>'
    ;
