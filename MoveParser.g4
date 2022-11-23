@@ -25,13 +25,20 @@ options
 // entry point
 
 crate
-   : moveModule EOF
+   : (moveModule | moveScript) EOF
    ;
 
 // ****************** defined for Move language ****************** //
 
 moveModule
    : 'module' address '::' identifier (';' | '{' item* '}')
+   ;
+
+moveScript
+   : 'script'  '{' useItem* constantItem* functionItem '}'
+   ;
+scriptFunctionItem
+   : 'fun' identifier genericParams? '(' functionParameters? ')' (blockExpression | ';')
    ;
 
 item
@@ -711,6 +718,7 @@ pathExprSegment
    ;
 pathIdentSegment
    : identifier
+   | addressEvaluation
    | 'super'
    | 'self'
    | 'Self'
