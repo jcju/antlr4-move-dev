@@ -146,9 +146,11 @@ address
 addressEvaluation
    : '@' address
    ;
-
+numericalAddress
+   : ( INTEGER_LITERAL )
+   ;
 pathInExpression
-   : '::'? pathExprSegment ('::' pathExprSegment)*
+   : ('::' | numericalAddress '::')? pathExprSegment ('::' pathExprSegment)*
    ;
 pathExprSegment
    : pathIdentSegment ('::' genericArgs)?
@@ -301,6 +303,7 @@ expression
    | enumerationVariantExpression                       # EnumerationVariantExpression_
    | closureExpression                                  # ClosureExpression_  // 8.2.12
    | expressionWithBlock                                # ExpressionWithBlock_
+   | address '::' expression                            # ExpressionWithAddress
    ;
 
 comparisonOperator
