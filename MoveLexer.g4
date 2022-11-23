@@ -28,6 +28,7 @@ KW_ENTRY: 'entry';
 KW_ACQUIRE: 'acquires';
 KW_MODULE: 'module';
 KW_SCRIPT: 'script';
+KW_FRIEND: 'friend';
 
 // https://doc.rust-lang.org/reference/keywords.html strict
 KW_AS: 'as';

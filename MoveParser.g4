@@ -31,7 +31,7 @@ crate
 // ****************** defined for Move language ****************** //
 
 moveModule
-   : 'module' identifier (';' | '{' item* '}')
+   : 'module' address '::' identifier (';' | '{' item* '}')
    ;
 
 item
@@ -51,13 +51,10 @@ visItem
 normalItem
    :
    (
-      typesItem
+      typesItem      // not yet include struct
       | useItem
+      | friendItem
       | constantItem
-//      types_
-//      use_
-//      friend_
-//      constant_
    )
    ;
 
@@ -131,6 +128,16 @@ useItem
 useTree
    : (simplePath? '::')? ('*' | '{' ( useTree (',' useTree)* ','?)? '}')
    | simplePath ('as' (identifier | '_'))?
+   ;
+friendItem
+   : 'friend' address '::' identifier ';'
+   ;
+address
+   : ( INTEGER_LITERAL | identifier )
+   ;
+
+addressEvaluation
+   : '@' address
    ;
 
 // ************************** Rust parser ************************** //
