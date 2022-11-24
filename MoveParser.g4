@@ -162,6 +162,10 @@ pathIdentSegment
    | '$crate'
    ;
 
+bitShiftOperator
+   : '<<'
+   | '>>'
+   ;
 
 expression
    : 
@@ -183,6 +187,7 @@ expression
    | expression '^' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
    | expression '|' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
    | expression comparisonOperator expression           # ComparisonExpression   // 8.2.4
+   | expression bitShiftOperator expression             # BitShiftExpression   // exculsive in Move 
    | expression '&&' expression                         # LazyBooleanExpression  // 8.2.4
    | expression '||' expression                         # LazyBooleanExpression  // 8.2.4
    | expression '..' expression?                        # RangeExpression  // 8.2.14
@@ -290,8 +295,8 @@ compoundAssignOperator
    | '&='
    | '|='
    | '^='
-   | '<<='
-   | '>>='
+//   | '<<='
+//   | '>>='
    ;
 
 expressionWithBlock

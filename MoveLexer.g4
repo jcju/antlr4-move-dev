@@ -30,6 +30,9 @@ KW_MODULE: 'module';
 KW_SCRIPT: 'script';
 KW_FRIEND: 'friend';
 
+SHIFTLEFT: '<<';
+SHIFTRIGHT: '>>';
+
 // https://doc.rust-lang.org/reference/keywords.html strict
 KW_AS: 'as';
 KW_BREAK: 'break';
@@ -297,8 +300,8 @@ PERCENTEQ: '%=';
 CARETEQ: '^=';
 ANDEQ: '&=';
 OREQ: '|=';
-SHLEQ: '<<=';
-SHREQ: '>>=';
+//SHLEQ: '<<=';
+//SHREQ: '>>=';
 EQ: '=';
 EQEQ: '==';
 NE: '!=';
