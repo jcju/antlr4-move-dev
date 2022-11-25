@@ -304,8 +304,8 @@ expressionWithBlock
      blockExpression
    | loopExpression
    | ifExpression
-   | ifLetExpression
-   | matchExpression
+//   | ifLetExpression
+//   | matchExpression
    ;
 
 // 8.2.1
@@ -446,19 +446,21 @@ loopLabel
 
 // 8.2.15
 ifExpression
-   : 'if' expression blockExpression
+   : 'if' expression (expression | blockExpression)
    (
-      'else' (blockExpression | ifExpression | ifLetExpression)
+      'else' (expression | blockExpression | ifExpression )
    )?
    ;
+   /* 
 ifLetExpression
    : 'if' 'let' pattern '=' expression blockExpression
    (
       'else' (blockExpression | ifExpression | ifLetExpression)
    )?
    ;
-
+*/
 // 8.2.16
+/*
 matchExpression
    : 'match' expression '{' matchArms? '}'
    ;
@@ -476,7 +478,7 @@ matchArm
 matchArmGuard
    : 'if' expression
    ;
-
+*/
 // 9
 pattern
    : '|'? patternNoTopAlt ('|' patternNoTopAlt)*
