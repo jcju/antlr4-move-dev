@@ -208,13 +208,21 @@ expression
    | 'return' expression?                               # ReturnExpression // 8.2.17
    | 'abort' INTEGER_LITERAL                            # AbortExpression   // exculsive in Move 
    | '(' expression ')'                                 # GroupedExpression   // 8.2.5
-   | '[' arrayElements? ']'                             # ArrayExpression  // 8.2.6
+   | '[' vectorElements? ']'                            # VectorExpression  // exculsive in Move 
    | '(' tupleElements? ')'                             # TupleExpression  // 8.2.7
    | structExpression                                   # StructExpression_   // 8.2.8
 //   | enumerationVariantExpression                       # EnumerationVariantExpression_
    | expressionWithBlock                                # ExpressionWithBlock_
    ;
 
+vectorElements
+   : expression (',' expression)* ','?
+   | expression ';' expression
+   ;
+
+vectorType
+   : '[' type_ ';' expression ']'
+   ;   
 
 // ************************** Rust parser ************************** //
 
@@ -340,10 +348,6 @@ statements
    ;
 
 // 8.2.6
-arrayElements
-   : expression (',' expression)* ','?
-   | expression ';' expression
-   ;
 
 // 8.2.7
 tupleElements
@@ -435,7 +439,7 @@ patternWithoutRange
    | tupleStructPattern
    | tuplePattern
    | groupedPattern
-   | slicePattern
+//   | slicePattern
    | pathPattern
    ;
 
@@ -512,12 +516,14 @@ tuplePatternItems
 groupedPattern
    : '(' pattern ')'
    ;
+/*
 slicePattern
    : '[' slicePatternItems? ']'
    ;
 slicePatternItems
    : pattern (',' pattern)* ','?
    ;
+*/
 pathPattern
    : pathInExpression
    | qualifiedPathInExpression
@@ -534,8 +540,8 @@ typeNoBounds
    | neverType
    | rawPointerType
    | referenceType
-   | arrayType
-   | sliceType
+   | vectorType
+//   | sliceType
    | inferredType
    | qualifiedPathInType
    ;
@@ -554,15 +560,14 @@ tupleType
    ;
 
 // 10.1.6
-arrayType
-   : '[' type_ ';' expression ']'
-   ;
+
 
 // 10.1.7
+/*
 sliceType
    : '[' type_ ']'
    ;
-
+*/
 // 10.1.13
 referenceType
    : '&' lifetime? 'mut'? typeNoBounds
