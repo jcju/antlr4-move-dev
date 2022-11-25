@@ -313,14 +313,13 @@ expressionWithBlock
 
 // 8.2.1
 literalExpression
-   : CHAR_LITERAL
-   | STRING_LITERAL
-   | RAW_STRING_LITERAL
-   | BYTE_LITERAL
-   | BYTE_STRING_LITERAL
-   | RAW_BYTE_STRING_LITERAL
-   | INTEGER_LITERAL
-//   | FLOAT_LITERAL
+   : INTEGER_LITERAL
+//   | CHAR_LITERAL
+//   | STRING_LITERAL
+//   | RAW_STRING_LITERAL
+//   | BYTE_LITERAL
+//   | BYTE_STRING_LITERAL
+//   | RAW_BYTE_STRING_LITERAL
    | KW_TRUE
    | KW_FALSE
    ;
@@ -443,14 +442,13 @@ patternWithoutRange
 literalPattern
    : KW_TRUE
    | KW_FALSE
-   | CHAR_LITERAL
-   | BYTE_LITERAL
-   | STRING_LITERAL
-   | RAW_STRING_LITERAL
-   | BYTE_STRING_LITERAL
-   | RAW_BYTE_STRING_LITERAL
+//   | CHAR_LITERAL
+//   | BYTE_LITERAL
+//   | STRING_LITERAL
+//   | RAW_STRING_LITERAL
+//   | BYTE_STRING_LITERAL
+//   | RAW_BYTE_STRING_LITERAL
    | '-'? INTEGER_LITERAL
-//   | '-'? FLOAT_LITERAL
    ;
 
 identifierPattern
@@ -468,10 +466,9 @@ rangePattern
    | rangePatternBound '...' rangePatternBound  # ObsoleteRangePattern
    ;
 rangePatternBound
-   : CHAR_LITERAL
-   | BYTE_LITERAL
-   | '-'? INTEGER_LITERAL
-//   | '-'? FLOAT_LITERAL
+//   : CHAR_LITERAL
+//   | BYTE_LITERAL
+   : '-'? INTEGER_LITERAL
    | pathPattern
    ;
 referencePattern

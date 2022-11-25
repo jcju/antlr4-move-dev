@@ -41,15 +41,15 @@ KW_CONST: 'const';
 KW_CONTINUE: 'continue';
 KW_CRATE: 'crate';
 KW_ELSE: 'else';
-KW_EXTERN: 'extern';
+//KW_EXTERN: 'extern';
 KW_FALSE: 'false';
 KW_FOR: 'for';
 KW_IF: 'if';
 KW_IN: 'in';
 KW_LET: 'let';
 KW_LOOP: 'loop';
-KW_MATCH: 'match';
-KW_MOVE: 'move';
+//KW_MATCH: 'match';
+//KW_MOVE: 'move';
 KW_MUT: 'mut';
 KW_REF: 'ref';
 KW_RETURN: 'return';
@@ -63,25 +63,6 @@ KW_TYPE: 'type';
 KW_USE: 'use';
 KW_WHERE: 'where';
 KW_WHILE: 'while';
-
-// 2018+
-
-// reserved
-KW_ABSTRACT: 'abstract';
-KW_BECOME: 'become';
-KW_BOX: 'box';
-KW_DO: 'do';
-KW_FINAL: 'final';
-KW_MACRO: 'macro';
-KW_OVERRIDE: 'override';
-KW_PRIV: 'priv';
-KW_TYPEOF: 'typeof';
-KW_UNSIZED: 'unsized';
-KW_VIRTUAL: 'virtual';
-KW_YIELD: 'yield';
-
-// reserved 2018+
-KW_TRY: 'try';
 
 // weak
 KW_STATICLIFETIME: '\'static';
@@ -244,41 +225,18 @@ HEX_LITERAL: '0x' '_'* HEX_DIGIT (HEX_DIGIT | '_')*;
 OCT_LITERAL: '0o' '_'* OCT_DIGIT (OCT_DIGIT | '_')*;
 
 BIN_LITERAL: '0b' '_'* [01] [01_]*;
-/*
-FLOAT_LITERAL
-   : {this.floatLiteralPossible()}? (DEC_LITERAL '.' {this.floatDotPossible()}?
-   | DEC_LITERAL
-   (
-      '.' DEC_LITERAL
-   )? FLOAT_EXPONENT? FLOAT_SUFFIX?)
-   ;
-*/
+
 fragment INTEGER_SUFFIX
    : 'u8'
-   | 'u16'
-   | 'u32'
    | 'u64'
    | 'u128'
-   | 'usize'
-   | 'i8'
-   | 'i16'
-   | 'i32'
-   | 'i64'
-   | 'i128'
-   | 'isize'
    ;
-
-fragment FLOAT_SUFFIX: 'f32' | 'f64';
-
-fragment FLOAT_EXPONENT: [eE] [+-]? '_'* DEC_LITERAL;
 
 fragment OCT_DIGIT: [0-7];
 
 fragment DEC_DIGIT: [0-9];
 
 fragment HEX_DIGIT: [0-9a-fA-F];
-
-// LIFETIME_TOKEN: '\'' IDENTIFIER_OR_KEYWORD | '\'_';
 
 LIFETIME_OR_LABEL: '\'' NON_KEYWORD_IDENTIFIER;
 
@@ -301,8 +259,6 @@ PERCENTEQ: '%=';
 CARETEQ: '^=';
 ANDEQ: '&=';
 OREQ: '|=';
-//SHLEQ: '<<=';
-//SHREQ: '>>=';
 EQ: '=';
 EQEQ: '==';
 NE: '!=';
