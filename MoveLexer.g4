@@ -29,6 +29,7 @@ KW_ACQUIRE: 'acquires';
 KW_MODULE: 'module';
 KW_SCRIPT: 'script';
 KW_FRIEND: 'friend';
+KW_ABORT: 'abort';
 
 SHIFTLEFT: '<<';
 SHIFTRIGHT: '>>';

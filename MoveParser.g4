@@ -206,6 +206,7 @@ expression
    | 'continue' LIFETIME_OR_LABEL? expression?          # ContinueExpression  // 8.2.13
    | 'break' LIFETIME_OR_LABEL? expression?             # BreakExpression  // 8.2.13
    | 'return' expression?                               # ReturnExpression // 8.2.17
+   | 'abort' INTEGER_LITERAL                            # AbortExpression   // exculsive in Move 
    | '(' expression ')'                                 # GroupedExpression   // 8.2.5
    | '[' arrayElements? ']'                             # ArrayExpression  // 8.2.6
    | '(' tupleElements? ')'                             # TupleExpression  // 8.2.7
