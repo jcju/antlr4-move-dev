@@ -180,7 +180,7 @@ expression
    | pathExpression                                     # PathExpression_
    | expression '.' pathExprSegment '(' callParams? ')' # MethodCallExpression   // 8.2.10
    | expression '.' identifier                          # FieldExpression  // 8.2.11
-   | expression '.' tupleIndex                          # TupleIndexingExpression   // 8.2.7
+//   | expression '.' tupleIndex                          # TupleIndexingExpression   // 8.2.7
    | expression '(' callParams? ')'                     # CallExpression   // 8.2.9
    | expression '[' expression ']'                      # IndexExpression  // 8.2.6
    | expression '?'                                     # ErrorPropagationExpression   // 8.2.4
@@ -206,10 +206,10 @@ expression
    | 'continue' LIFETIME_OR_LABEL? expression?          # ContinueExpression  // 8.2.13
    | 'break' LIFETIME_OR_LABEL? expression?             # BreakExpression  // 8.2.13
    | 'return' expression?                               # ReturnExpression // 8.2.17
-   | 'abort' INTEGER_LITERAL                            # AbortExpression   // exculsive in Move 
+   | 'abort' INTEGER_LITERAL                            # AbortExpression          // exculsive in Move 
    | '(' expression ')'                                 # GroupedExpression   // 8.2.5
-   | '[' vectorElements? ']'                            # VectorExpression  // exculsive in Move 
-   | '(' tupleElements? ')'                             # TupleExpression  // 8.2.7
+   | '[' vectorElements? ']'                            # VectorExpression         // exculsive in Move 
+   | '(' parenthesizedElements? ')'                     # ParenthesizedExpression  // exculsive in Move 
    | structExpression                                   # StructExpression_   // 8.2.8
 //   | enumerationVariantExpression                       # EnumerationVariantExpression_
    | expressionWithBlock                                # ExpressionWithBlock_
@@ -223,6 +223,11 @@ vectorElements
 vectorType
    : '[' type_ ';' expression ']'
    ;   
+
+   
+parenthesizedElements
+   : (expression ',')+ expression?
+   ;
 
 // ************************** Rust parser ************************** //
 
@@ -238,27 +243,30 @@ asClause
 // 6.6
 struct_
    : structStruct
-   | tupleStruct
+//   | tupleStruct
    ;
 structStruct
    : 'struct' identifier genericParams? ('{' structFields? '}' | ';')
    ;
+/*
 tupleStruct
    : 'struct' identifier genericParams? '(' tupleFields? ')' ';'
    ;
+*/
 structFields
    : structField (',' structField)* ','?
    ;
 structField
    :  visibility? identifier ':' type_
    ;
+/*   
 tupleFields
    : tupleField (',' tupleField)* ','?
    ;
 tupleField
    :  visibility? type_
    ;
-
+*/
 // 6.7
 
 // 6.8
@@ -350,17 +358,17 @@ statements
 // 8.2.6
 
 // 8.2.7
-tupleElements
-   : (expression ',')+ expression?
-   ;
+
+/*   
 tupleIndex
    : INTEGER_LITERAL
    ;
+*/
 
 // 8.2.8
 structExpression
    : structExprStruct
-   | structExprTuple
+//   | structExprTuple
    | structExprUnit
    ;
 structExprStruct
@@ -370,14 +378,16 @@ structExprFields
    : structExprField (',' structExprField)* (',' structBase | ','?)
    ;
 structExprField
-   :  (identifier | (identifier | tupleIndex) ':' expression)
+   :  (identifier | identifier ':' expression)
    ;
 structBase
    : '..' expression
    ;
+/*
 structExprTuple
    : pathInExpression '(' (expression ( ',' expression)* ','?)? ')'
    ;
+*/
 structExprUnit
    : pathInExpression
    ;
@@ -436,8 +446,8 @@ patternWithoutRange
    | restPattern
    | referencePattern
    | structPattern
-   | tupleStructPattern
-   | tuplePattern
+//   | tupleStructPattern
+//   | tuplePattern
    | groupedPattern
 //   | slicePattern
    | pathPattern
@@ -491,14 +501,14 @@ structPatternFields
 structPatternField
    : 
    (
-      tupleIndex ':' pattern
-      | identifier ':' pattern
+      identifier ':' pattern
       | 'ref'? 'mut'? identifier
    )
    ;
 structPatternEtCetera
    :  '..'
    ;
+   /*
 tupleStructPattern
    : pathInExpression '(' tupleStructItems? ')'
    ;
@@ -512,7 +522,7 @@ tuplePatternItems
    : pattern ','
    | restPattern
    | pattern (',' pattern)+ ','?
-   ;
+   ;*/
 groupedPattern
    : '(' pattern ')'
    ;
@@ -536,13 +546,13 @@ type_
 typeNoBounds
    : parenthesizedType
    | typePath
-   | tupleType
+//   | tupleType
    | neverType
    | rawPointerType
    | referenceType
    | vectorType
 //   | sliceType
-   | inferredType
+//   | inferredType
    | qualifiedPathInType
    ;
 parenthesizedType
@@ -555,10 +565,11 @@ neverType
    ;
 
 // 10.1.5
+/*
 tupleType
    : '(' ((type_ ',')+ type_?)? ')'
    ;
-
+*/
 // 10.1.6
 
 
@@ -579,10 +590,11 @@ rawPointerType
 // 10.1.15
 
 // 10.1.18
+/*
 inferredType
    : '_'
    ;
-
+*/
 // 10.6
 typeParamBounds
    : typeParamBound ('+' typeParamBound)* '+'?
