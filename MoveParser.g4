@@ -167,6 +167,13 @@ bitShiftOperator
    | '>>'
    ;
 
+ifExpression
+   : 'if' expression (expression | blockExpression)
+   (
+      'else' (expression | blockExpression | ifExpression )
+   )?
+   ;
+
 expression
    : 
      literalExpression                                  # LiteralExpression_
@@ -203,8 +210,7 @@ expression
    | '[' arrayElements? ']'                             # ArrayExpression  // 8.2.6
    | '(' tupleElements? ')'                             # TupleExpression  // 8.2.7
    | structExpression                                   # StructExpression_   // 8.2.8
-   | enumerationVariantExpression                       # EnumerationVariantExpression_
-   | closureExpression                                  # ClosureExpression_  // 8.2.12
+//   | enumerationVariantExpression                       # EnumerationVariantExpression_
    | expressionWithBlock                                # ExpressionWithBlock_
    ;
 
@@ -295,8 +301,6 @@ compoundAssignOperator
    | '&='
    | '|='
    | '^='
-//   | '<<='
-//   | '>>='
    ;
 
 expressionWithBlock
@@ -304,8 +308,6 @@ expressionWithBlock
      blockExpression
    | loopExpression
    | ifExpression
-//   | ifLetExpression
-//   | matchExpression
    ;
 
 // 8.2.1
@@ -376,27 +378,6 @@ structExprUnit
    : pathInExpression
    ;
 
-enumerationVariantExpression
-   : enumExprStruct
-   | enumExprTuple
-   | enumExprFieldless
-   ;
-enumExprStruct
-   : pathInExpression '{' enumExprFields? '}'
-   ;
-enumExprFields
-   : enumExprField (',' enumExprField)* ','?
-   ;
-enumExprField
-   : identifier
-   | (identifier | tupleIndex) ':' expression
-   ;
-enumExprTuple
-   : pathInExpression '(' (expression (',' expression)* ','?)? ')'
-   ;
-enumExprFieldless
-   : pathInExpression
-   ;
 
 // 8.2.9
 callParams
@@ -404,19 +385,7 @@ callParams
    ;
 
 // 8.2.12
-closureExpression
-   : 'move'? ('||' | '|' closureParameters? '|')
-   (
-      expression
-      | '->' typeNoBounds blockExpression
-   )
-   ;
-closureParameters
-   : closureParam (',' closureParam)* ','?
-   ;
-closureParam
-   :  pattern (':' type_)?
-   ;
+
 
 // 8.2.13
 loopExpression
@@ -445,40 +414,8 @@ loopLabel
    ;
 
 // 8.2.15
-ifExpression
-   : 'if' expression (expression | blockExpression)
-   (
-      'else' (expression | blockExpression | ifExpression )
-   )?
-   ;
-   /* 
-ifLetExpression
-   : 'if' 'let' pattern '=' expression blockExpression
-   (
-      'else' (blockExpression | ifExpression | ifLetExpression)
-   )?
-   ;
-*/
-// 8.2.16
-/*
-matchExpression
-   : 'match' expression '{' matchArms? '}'
-   ;
-matchArms
-   : (matchArm '=>' matchArmExpression)* matchArm '=>' expression ','?
-   ;
-matchArmExpression
-   : expression ','
-   | expressionWithBlock ','?
-   ;
-matchArm
-   :  pattern matchArmGuard?
-   ;
 
-matchArmGuard
-   : 'if' expression
-   ;
-*/
+
 // 9
 pattern
    : '|'? patternNoTopAlt ('|' patternNoTopAlt)*
@@ -673,8 +610,6 @@ simplePathSegment
    | '$crate'
    ;
 
-
-//TODO: let x : T<_>=something;
 genericArgs
    : '<' '>'
    | '<' genericArgsLifetimes (',' genericArgsTypes)? (',' genericArgsBindings)? ','? '>'
