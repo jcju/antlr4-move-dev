@@ -40,6 +40,7 @@ Most of the test codes are excerpted from [Move book](https://diem.github.io/mov
 | ✅  | chp04_bool.move | PASSED |
 | ✅  | chp05_expr_with_address.move | 0x1234::Debug::print(&a) |
 | ✅  | chp05_let_assign_address.move | PASSED |
+| ✅  | chp05_address_keyword.move | Solve issue: keyword "address" cannot be identified as data type |
 | ✅  | chp06_byte_string_hex_string.move | (b"Hello!\n" == x"48656C6C6F210A") |
 | ✅  | chp06_vector.move | PASSED |
 | ✅  | chp08_reference_dereference.move | PASSED |
@@ -52,11 +53,10 @@ Most of the test codes are excerpted from [Move book](https://diem.github.io/mov
 | ✅  | chp14_while_stmt.move | PASSED |
 | ✅  | chp15_func_acquires.move | PASSED |
 | ✅  | chp15_func_entry_modifier.move | Move exclusive: entry func |
-| ✅  | chp15_func_multiple_return_value.move | PASSED |
+| ✅  | chp15_func_multiple_return_value.move | using tuple to specify multiple types of return value |
 | ✅  | chp15_func_return_value.move | PASSED |
-| ✅  | chp15_func_visibility.move | PASSED |
+| ✅  | chp15_func_visibility.move | public, public(friend), public(script) |
 | ✅  | chp16_struct.move | PASSED |
-| ✅  | chp05_address_keyword.move | Solve: keyword "address" cannot be identified as data type |
 | ✅  | -- |  |
 | - | BasicCoin | not tested yet |
 | ❌  | place_holder            | test: FAIL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
