@@ -60,5 +60,6 @@ Most of the test codes are excerpted from [Move book](https://diem.github.io/mov
 | ✅  | chp16_access_struct_fields.move | access member fields of a struct |
 | ✅  | chp19_type_abilities.move | Type abilities with generic structs |
 | ✅  | -- |  |
-| - | BasicCoin | not tested yet |
+| ✅ | resource_coin.move | exampleCoin: an example of resource in Move language. |
+| ✅  | -- |  |
 | ❌  | place_holder            | test: FAIL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
