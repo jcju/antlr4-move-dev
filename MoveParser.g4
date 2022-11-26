@@ -127,7 +127,7 @@ acquireAnnotation
 
 // normal Items
 typesItem
-   : 'type' identifier genericParams? ('=' type_)? ';'
+   : struct_   // struct is the only user-defined data structure in Move
    ;
 constantItem
    : 'const' (identifier | '_') ':' type_ ('=' expression)? ';'
@@ -249,34 +249,14 @@ asClause
 
 // 6.6
 struct_
-   : structStruct
-//   | tupleStruct
-   ;
-structStruct
    : 'struct' identifier genericParams? ('{' structFields? '}' | ';')
    ;
-/*
-tupleStruct
-   : 'struct' identifier genericParams? '(' tupleFields? ')' ';'
-   ;
-*/
 structFields
    : structField (',' structField)* ','?
    ;
 structField
    :  visibility? identifier ':' type_
    ;
-/*   
-tupleFields
-   : tupleField (',' tupleField)* ','?
-   ;
-tupleField
-   :  visibility? type_
-   ;
-*/
-// 6.7
-
-// 6.8
 
 // 6.10
 staticItem
