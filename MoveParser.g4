@@ -174,6 +174,10 @@ ifExpression
    )?
    ;
 
+assertExpression
+   : 'assert!' '(' expression ',' (INTEGER_LITERAL | identifier) ')'
+   ;
+
 expression
    : 
      literalExpression                                  # LiteralExpression_
@@ -322,7 +326,7 @@ expressionWithBlock
      blockExpression
    | loopExpression
    | ifExpression
-//   | assertExpression
+   | assertExpression
    ;
 
 // 8.2.1
