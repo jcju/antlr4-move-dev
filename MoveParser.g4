@@ -334,7 +334,7 @@ literalExpression
 //   | STRING_LITERAL
 //   | RAW_STRING_LITERAL
 //   | BYTE_LITERAL
-//   | BYTE_STRING_LITERAL
+   | BYTE_STRING_LITERAL
 //   | RAW_BYTE_STRING_LITERAL
    | KW_TRUE
    | KW_FALSE
@@ -546,7 +546,7 @@ type_
 typeNoBounds
    : parenthesizedType
    | typePath
-//   | tupleType
+   | tupleType
    | neverType
    | rawPointerType
    | referenceType
@@ -565,11 +565,11 @@ neverType
    ;
 
 // 10.1.5
-/*
+
 tupleType
    : '(' ((type_ ',')+ type_?)? ')'
    ;
-*/
+
 // 10.1.6
 
 
