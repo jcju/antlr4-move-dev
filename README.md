@@ -43,6 +43,7 @@ Most of the test codes are excerpted from [Move book](https://diem.github.io/mov
 | ✅  | chp05_address_keyword.move | Solve issue: keyword "address" cannot be identified as data type |
 | ✅  | chp06_byte_string_hex_string.move | (b"Hello!\n" == x"48656C6C6F210A") |
 | ✅  | chp06_vector.move | PASSED |
+| ✅  | chp07_signer.move | PASSED |
 | ✅  | chp08_reference_dereference.move | PASSED |
 | ✅  | chp09_tuple.move | PASSED |
 | ✅  | chp09_tuple_destructure.move | make tuple valid in LHS & RHS |
@@ -58,7 +59,9 @@ Most of the test codes are excerpted from [Move book](https://diem.github.io/mov
 | ✅  | chp15_func_visibility.move | public, public(friend), public(script) |
 | ✅  | chp16_struct.move | PASSED |
 | ✅  | chp16_access_struct_fields.move | access member fields of a struct |
-| ✅  | chp19_type_abilities.move | Type abilities with generic structs |
+| ✅  | chp17_constants.move | PASSED |
+| ✅  | chp18_generic_type_recursion.move | PASSED |
+| ✅  | chp19_type_abilities.move | type abilities with generic structs |
 | ✅  | -- |  |
 | ✅ | resource_coin.move | exampleCoin: an example of resource in Move language. |
 | ✅  | -- |  |
