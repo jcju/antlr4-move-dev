@@ -125,7 +125,7 @@ acquireAnnotation
 
 // normal Items
 typeItem
-   : struct_   // struct is the only user-defined data structure in Move
+   : structItem   // struct is the only user-defined data structure in Move
    ;
 constantItem
    : 'const' (identifier | '_') ':' type_ ('=' expression)? ';'
@@ -236,8 +236,22 @@ tupleElements
    ;
 
 // struct
-struct_
-   : 'struct' identifier genericParams? ('{' structFields? '}' | ';')
+structItem
+   : 'struct' identifier genericParams? typeAbilities? ('{' structFields? '}' | ';')
+   ;
+
+typeAbilities
+   : 'has' abilityFields
+   ;
+abilityFields
+   : abilityField (',' abilityField)* ','?
+   ;
+abilityField
+   :( 'copy'
+    | 'drop'
+    | 'store'
+    | 'key'
+   )
    ;
 structFields
    : structField (',' structField)* ','?

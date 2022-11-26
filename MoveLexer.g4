@@ -33,6 +33,13 @@ KW_ABORT: 'abort';
 KW_ASSERT: 'assert!';
 KW_ADDRESS: 'address';
 
+KW_HAS: 'has';
+KW_COPY: 'copy';
+KW_DROP: 'drop';
+KW_STORE: 'store';
+KW_KEY: 'key';
+
+
 SHIFTLEFT: '<<';
 SHIFTRIGHT: '>>';
 

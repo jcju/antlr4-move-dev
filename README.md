@@ -58,6 +58,7 @@ Most of the test codes are excerpted from [Move book](https://diem.github.io/mov
 | ✅  | chp15_func_visibility.move | public, public(friend), public(script) |
 | ✅  | chp16_struct.move | PASSED |
 | ✅  | chp16_access_struct_fields.move | access member fields of a struct |
+| ✅  | chp19_type_abilities.move | Type abilities with generic structs |
 | ✅  | -- |  |
 | - | BasicCoin | not tested yet |
 | ❌  | place_holder            | test: FAIL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
