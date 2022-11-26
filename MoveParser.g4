@@ -33,8 +33,11 @@ crate
 moveModule
    : 
    ('module' address '::' identifier (';' | '{' item* '}')
-   | 'address' address '{' 'module' identifier (';' | '{' item* '}') '}'
+   | 'address' address '{' moveModuleWithinAddrBlock* '}'
    )
+   ;
+moveModuleWithinAddrBlock
+   : 'module' identifier (';' | '{' item* '}')
    ;
 
 moveScript
