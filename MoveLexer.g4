@@ -30,6 +30,7 @@ KW_MODULE: 'module';
 KW_SCRIPT: 'script';
 KW_FRIEND: 'friend';
 KW_ABORT: 'abort';
+KW_ASSERT: 'assert!';
 
 SHIFTLEFT: '<<';
 SHIFTRIGHT: '>>';
@@ -41,15 +42,12 @@ KW_CONST: 'const';
 KW_CONTINUE: 'continue';
 KW_CRATE: 'crate';
 KW_ELSE: 'else';
-//KW_EXTERN: 'extern';
 KW_FALSE: 'false';
 KW_FOR: 'for';
 KW_IF: 'if';
 KW_IN: 'in';
 KW_LET: 'let';
 KW_LOOP: 'loop';
-//KW_MATCH: 'match';
-//KW_MOVE: 'move';
 KW_MUT: 'mut';
 KW_REF: 'ref';
 KW_RETURN: 'return';
@@ -189,6 +187,8 @@ fragment RAW_STRING_CONTENT: '#' RAW_STRING_CONTENT '#' | '"' .*? '"';
 BYTE_LITERAL: 'b\'' (. | QUOTE_ESCAPE | BYTE_ESCAPE) '\'';
 
 BYTE_STRING_LITERAL: 'b"' (~["] | QUOTE_ESCAPE | BYTE_ESCAPE)* '"';
+
+HEX_STRING_LITERAL: 'x"' (~["] | QUOTE_ESCAPE | BYTE_ESCAPE)* '"';       // exculsive in Move 
 
 RAW_BYTE_STRING_LITERAL: 'br' RAW_STRING_CONTENT;
 

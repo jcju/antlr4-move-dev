@@ -180,7 +180,6 @@ expression
    | pathExpression                                     # PathExpression_
    | expression '.' pathExprSegment '(' callParams? ')' # MethodCallExpression   // 8.2.10
    | expression '.' identifier                          # FieldExpression  // 8.2.11
-//   | expression '.' tupleIndex                          # TupleIndexingExpression   // 8.2.7
    | expression '(' callParams? ')'                     # CallExpression   // 8.2.9
    | expression '[' expression ']'                      # IndexExpression  // 8.2.6
    | expression '?'                                     # ErrorPropagationExpression   // 8.2.4
@@ -209,9 +208,8 @@ expression
    | 'abort' INTEGER_LITERAL                            # AbortExpression          // exculsive in Move 
    | '(' expression ')'                                 # GroupedExpression   // 8.2.5
    | '[' vectorElements? ']'                            # VectorExpression         // exculsive in Move 
-   | '(' parenthesizedElements? ')'                     # ParenthesizedExpression  // exculsive in Move 
+   | '(' tupleElements? ')'                             # TupleExpression  // limited support in Move 
    | structExpression                                   # StructExpression_   // 8.2.8
-//   | enumerationVariantExpression                       # EnumerationVariantExpression_
    | expressionWithBlock                                # ExpressionWithBlock_
    ;
 
@@ -224,8 +222,7 @@ vectorType
    : '[' type_ ';' expression ']'
    ;   
 
-   
-parenthesizedElements
+tupleElements
    : (expression ',')+ expression?
    ;
 
@@ -325,6 +322,7 @@ expressionWithBlock
      blockExpression
    | loopExpression
    | ifExpression
+//   | assertExpression
    ;
 
 // 8.2.1
@@ -335,6 +333,7 @@ literalExpression
 //   | RAW_STRING_LITERAL
 //   | BYTE_LITERAL
    | BYTE_STRING_LITERAL
+   | HEX_STRING_LITERAL
 //   | RAW_BYTE_STRING_LITERAL
    | KW_TRUE
    | KW_FALSE
@@ -460,7 +459,8 @@ literalPattern
 //   | BYTE_LITERAL
 //   | STRING_LITERAL
 //   | RAW_STRING_LITERAL
-//   | BYTE_STRING_LITERAL
+   | BYTE_STRING_LITERAL
+   | HEX_STRING_LITERAL
 //   | RAW_BYTE_STRING_LITERAL
    | '-'? INTEGER_LITERAL
    ;
