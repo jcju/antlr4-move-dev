@@ -450,7 +450,7 @@ patternWithoutRange
    | referencePattern
    | structPattern
 //   | tupleStructPattern
-//   | tuplePattern
+   | tuplePattern
    | groupedPattern
 //   | slicePattern
    | pathPattern
@@ -519,6 +519,7 @@ tupleStructPattern
 tupleStructItems
    : pattern (',' pattern)* ','?
    ;
+   */
 tuplePattern
    : '(' tuplePatternItems? ')'
    ;
@@ -526,7 +527,7 @@ tuplePatternItems
    : pattern ','
    | restPattern
    | pattern (',' pattern)+ ','?
-   ;*/
+   ;
 groupedPattern
    : '(' pattern ')'
    ;
