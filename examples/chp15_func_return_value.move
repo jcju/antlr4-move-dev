@@ -1,7 +1,7 @@
 
-module 0x66::some_module {   
-use std::vector;
-use std::option;
+module 0x66::example_module { 
+    use std::vector;
+    use std::option;
 
     fun f1(): u64 { return 0 }
     fun f2(): u64 { 1 + 1 }
