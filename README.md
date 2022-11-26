@@ -1,8 +1,6 @@
 ## ANTLR parser for Move language
 
 
-
-
 ### Build and run
 
 Simple usage:
@@ -13,26 +11,50 @@ javac *.java
 grun Move crate -gui < examples/hello.move
 ```
 
+### Reference
+
+Grammar pattern is implemented according to Diem official documentation:
+-  Move book: https://diem.github.io/move/
 
 
 ## Test
 
 <br/>
 
+Most of the test codes are excerpted from [Move book](https://diem.github.io/move/)'s chapters.
+
+<br/>
+
 | Status | Test file          | Notes                                                           |
 | :-: | ------------------ | ----------------------------------------------------------- |
 | ✅  | hello.move | PASSED |
-| ✅  | visibility_func.move | PASSED |
-| ✅  | func_entry_modifier.move | PASSED |
-| ✅  | func_multi_return_value.move | PASSED |
-| ✅  | func_acquires.move | PASSED |
-| ✅  | module_basic.move | PASSED |
-| ✅  | module_address_friend.move | PASSED |    
-| ✅  | script_basic.move | PASSED | 
-| ✅  | module_address_in_useItem.move | PASSED |    
-| ✅  | script_address_evaluation.move | PASSED |    
-| ✅  | expr_with_address.move | PASSED |
-| ✅  | let_assign_address.move | PASSED |
+| ✅  | chp01_address_before_friendItem.move | PASSED |
+| ✅  | chp01_address_before_useItem.move | PASSED |
+| ✅  | chp01_module_basic.move | [use] [friend] [type] [constant] [function] |
+| ✅  | chp01_module_other_address_style.move | another style: put modules inside address block {} |
+| ✅  | chp01_multiple_module_in_one_address_block.move | PASSED |
+| ✅  | chp01_script_address_evaluation.move | PASSED |
+| ✅  | chp01_script_basic.move | [use] [constant] [function] |
+| ✅  | chp03_cast.move | cast using "as" statement |
+| ✅  | chp03_uint.move | three unsigned integer type: u8, u64, u128 |
+| ✅  | chp04_bool.move | PASSED |
+| ✅  | chp05_expr_with_address.move | 0x1234::Debug::print(&a) |
+| ✅  | chp05_let_assign_address.move | PASSED |
+| ✅  | chp06_byte_string_hex_string.move | (b"Hello!\n" == x"48656C6C6F210A") |
+| ✅  | chp06_vector.move | PASSED |
+| ✅  | chp08_reference_dereference.move | PASSED |
+| ✅  | chp09_tuple.move | PASSED |
+| ✅  | chp09_tuple_destructure.move | PASSED |
+| ✅  | chp12_abort.move | PASSED |
+| ✅  | chp12_assert.move | PASSED |
+| ✅  | chp13_if_else_single_and_block_expr.move | PASSED |
+| ✅  | chp14_loop_stmt.move | PASSED |
+| ✅  | chp14_while_stmt.move | PASSED |
+| ✅  | chp15_func_acquires.move | PASSED |
+| ✅  | chp15_func_entry_modifier.move | PASSED |
+| ✅  | chp15_func_multiple_return_value.move | PASSED |
+| ✅  | chp15_func_return_value.move | PASSED |
+| ✅  | chp15_func_visibility.move | PASSED |
 | ✅  | -- |  |
 | - | BasicCoin | not tested yet |
 | ❌  | place_holder            | test: FAIL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
