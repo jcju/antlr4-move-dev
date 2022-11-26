@@ -164,8 +164,9 @@ pathIdentSegment
    | 'super'
    | 'self'
    | 'Self'
-   | 'crate'
-   | '$crate'
+   | 'address'       // exclusive in Move
+//   | 'crate'
+//   | '$crate'
    ;
 
 bitShiftOperator

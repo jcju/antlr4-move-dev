@@ -55,6 +55,8 @@ Most of the test codes are excerpted from [Move book](https://diem.github.io/mov
 | ✅  | chp15_func_multiple_return_value.move | PASSED |
 | ✅  | chp15_func_return_value.move | PASSED |
 | ✅  | chp15_func_visibility.move | PASSED |
+| ✅  | chp16_struct.move | PASSED |
+| ✅  | chp05_address_keyword.move | Solve: keyword "address" cannot be identified as data type |
 | ✅  | -- |  |
 | - | BasicCoin | not tested yet |
 | ❌  | place_holder            | test: FAIL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
