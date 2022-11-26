@@ -1,5 +1,5 @@
 
-module Example {
+module 0x42::Example {
     const ONE: u64 = 1;
     use std::debug;
     

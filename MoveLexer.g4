@@ -31,6 +31,7 @@ KW_SCRIPT: 'script';
 KW_FRIEND: 'friend';
 KW_ABORT: 'abort';
 KW_ASSERT: 'assert!';
+KW_ADDRESS: 'address';
 
 SHIFTLEFT: '<<';
 SHIFTRIGHT: '>>';

@@ -31,7 +31,10 @@ crate
 // ****************** defined for Move language ****************** //
 
 moveModule
-   : 'module' address '::' identifier (';' | '{' item* '}')
+   : 
+   ('module' address '::' identifier (';' | '{' item* '}')
+   | 'address' address '{' 'module' identifier (';' | '{' item* '}') '}'
+   )
    ;
 
 moveScript
