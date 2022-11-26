@@ -54,14 +54,12 @@ visItem
    : visibility?
    (
       functionItem
-//      | struct_
-//      | staticItem
    )
    ;
 normalItem
    :
    (
-      typesItem      // not yet include struct
+      typeItem
       | useItem
       | friendItem
       | constantItem
@@ -126,7 +124,7 @@ acquireAnnotation
    ;
 
 // normal Items
-typesItem
+typeItem
    : struct_   // struct is the only user-defined data structure in Move
    ;
 constantItem
@@ -237,18 +235,7 @@ tupleElements
    : (expression ',')+ expression?
    ;
 
-// ************************** Rust parser ************************** //
-
-// 6.2
-crateRef
-   : identifier
-   | 'self'
-   ;
-asClause
-   : 'as' (identifier | '_')
-   ;
-
-// 6.6
+// struct
 struct_
    : 'struct' identifier genericParams? ('{' structFields? '}' | ';')
    ;
@@ -256,20 +243,10 @@ structFields
    : structField (',' structField)* ','?
    ;
 structField
-   :  visibility? identifier ':' type_
+   :  identifier ':' type_
    ;
 
-// 6.10
-staticItem
-   : 'static' 'mut'? identifier ':' type_ ('=' expression)? ';'
-   ;
-
-// 6.14
-forLifetimes
-   : 'for' genericParams
-   ;
-
-// 8
+// statement
 statement
    : ';'
    | item
@@ -284,6 +261,22 @@ letStatement
 expressionStatement
    : expression ';'
    | expressionWithBlock ';'?
+   ;
+
+// ************************** Rust parser ************************** //
+
+// 6.2
+crateRef
+   : identifier
+   | 'self'
+   ;
+asClause
+   : 'as' (identifier | '_')
+   ;
+
+// 6.14
+forLifetimes
+   : 'for' genericParams
    ;
 
 // 8.2
@@ -345,16 +338,6 @@ statements
    | expression
    ;
 
-// 8.2.6
-
-// 8.2.7
-
-/*   
-tupleIndex
-   : INTEGER_LITERAL
-   ;
-*/
-
 // 8.2.8
 structExpression
    : structExprStruct
@@ -373,23 +356,14 @@ structExprField
 structBase
    : '..' expression
    ;
-/*
-structExprTuple
-   : pathInExpression '(' (expression ( ',' expression)* ','?)? ')'
-   ;
-*/
 structExprUnit
    : pathInExpression
    ;
-
 
 // 8.2.9
 callParams
    : expression (',' expression)* ','?
    ;
-
-// 8.2.12
-
 
 // 8.2.13
 loopExpression
@@ -416,9 +390,6 @@ iteratorLoopExpression
 loopLabel
    : LIFETIME_OR_LABEL ':'
    ;
-
-// 8.2.15
-
 
 // 9
 pattern
@@ -499,14 +470,6 @@ structPatternField
 structPatternEtCetera
    :  '..'
    ;
-   /*
-tupleStructPattern
-   : pathInExpression '(' tupleStructItems? ')'
-   ;
-tupleStructItems
-   : pattern (',' pattern)* ','?
-   ;
-   */
 tuplePattern
    : '(' tuplePatternItems? ')'
    ;
@@ -518,14 +481,6 @@ tuplePatternItems
 groupedPattern
    : '(' pattern ')'
    ;
-/*
-slicePattern
-   : '[' slicePatternItems? ']'
-   ;
-slicePatternItems
-   : pattern (',' pattern)* ','?
-   ;
-*/
 pathPattern
    : pathInExpression
    | qualifiedPathInExpression
@@ -543,8 +498,6 @@ typeNoBounds
    | rawPointerType
    | referenceType
    | vectorType
-//   | sliceType
-//   | inferredType
    | qualifiedPathInType
    ;
 parenthesizedType
@@ -562,15 +515,6 @@ tupleType
    : '(' ((type_ ',')+ type_?)? ')'
    ;
 
-// 10.1.6
-
-
-// 10.1.7
-/*
-sliceType
-   : '[' type_ ']'
-   ;
-*/
 // 10.1.13
 referenceType
    : '&' lifetime? 'mut'? typeNoBounds
@@ -579,14 +523,6 @@ rawPointerType
    : '*' ('mut' | 'const') typeNoBounds
    ;
 
-// 10.1.15
-
-// 10.1.18
-/*
-inferredType
-   : '_'
-   ;
-*/
 // 10.6
 typeParamBounds
    : typeParamBound ('+' typeParamBound)* '+'?
@@ -601,7 +537,7 @@ lifetimeBounds
    ;
 lifetime
    : LIFETIME_OR_LABEL
-   | '\'static'
+//   | '\'static'
    | '\'_'
    ;
 
@@ -613,8 +549,8 @@ simplePathSegment
    : identifier
    | 'super'
    | 'self'
-   | 'crate'
-   | '$crate'
+//   | 'crate'
+//   | '$crate'
    ;
 
 genericArgs
