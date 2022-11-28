@@ -25,7 +25,7 @@ options
 // entry point
 
 crate
-   : (moveModule | moveScript) EOF
+   : (moveModule+ | moveScript) EOF
    ;
 
 // ****************** defined for Move language ****************** //
@@ -159,9 +159,9 @@ pathExprSegment
 pathIdentSegment
    : identifier
    | addressEvaluation
-   | 'super'
+//   | 'super'
    | 'self'
-   | 'Self'
+//   | 'Self'
    | 'address'       // exclusive in Move
 //   | 'crate'
 //   | '$crate'
@@ -506,6 +506,7 @@ type_
    ;
 typeNoBounds
    : parenthesizedType
+//   | identifier '<' type_ '>'
    | typePath
    | tupleType
    | neverType
@@ -561,7 +562,7 @@ simplePath
    ;
 simplePathSegment
    : identifier
-   | 'super'
+//   | 'super'
    | 'self'
 //   | 'crate'
 //   | '$crate'

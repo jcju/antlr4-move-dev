@@ -62,8 +62,8 @@ public abstract class MoveLexerBase extends Lexer{
             case MoveLexer.BIN_LITERAL:
 
             case MoveLexer.KW_SUPER:
-            case MoveLexer.KW_SELFVALUE:
-            case MoveLexer.KW_SELFTYPE:
+//            case MoveLexer.KW_SELFVALUE:
+//            case MoveLexer.KW_SELFTYPE:
             case MoveLexer.KW_CRATE:
             case MoveLexer.KW_DOLLARCRATE:
 

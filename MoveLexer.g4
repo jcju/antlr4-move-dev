@@ -60,7 +60,7 @@ KW_MUT: 'mut';
 KW_REF: 'ref';
 KW_RETURN: 'return';
 KW_SELFVALUE: 'self';
-KW_SELFTYPE: 'Self';
+//KW_SELFTYPE: 'Self';
 KW_STATIC: 'static';
 KW_STRUCT: 'struct';
 KW_SUPER: 'super';
