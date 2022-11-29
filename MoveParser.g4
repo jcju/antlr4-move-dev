@@ -152,7 +152,7 @@ pathInExpression
    : ('::' | numericalAddress '::')? pathExprSegment ('::' pathExprSegment)*
    ;
 pathExprSegment
-   : pathIdentSegment ('::' genericArgs)?
+   : pathIdentSegment ('::' genericArgs)? (vectorLiterals)?
    ;
 pathIdentSegment
    : identifier
@@ -163,6 +163,11 @@ pathIdentSegment
    | 'address'       // exclusive in Move
 //   | 'crate'
 //   | '$crate'
+   ;
+
+vectorLiterals
+   : '[' ']'
+   | '[' INTEGER_LITERAL (',' INTEGER_LITERAL)* ','? ']'
    ;
 
 bitShiftOperator
