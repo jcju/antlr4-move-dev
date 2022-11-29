@@ -23,7 +23,6 @@ options
    tokenVocab = MoveLexer;
 }
 // entry point
-
 crate
    : (moveModule+ | moveScript) EOF
    ;
@@ -41,10 +40,14 @@ moveModuleWithinAddrBlock
    ;
 
 moveScript
-   : 'script'  '{' useItem* constantItem* functionItem '}'
+   : outerAttribute* 'script'  '{' scriptDeclareItem scriptFunctionItem '}'
    ;
+scriptDeclareItem
+   : outerAttribute* useItem* outerAttribute* constantItem*
+   ;
+
 scriptFunctionItem
-   : 'fun' identifier genericParams? '(' functionParameters? ')' (blockExpression | ';')
+   : outerAttribute* 'fun' identifier genericParams? '(' functionParameters? ')' (blockExpression | ';')
    ;
 
 item
@@ -184,8 +187,8 @@ assertExpression
    ;
 
 expression
-   : 
-     literalExpression                                  # LiteralExpression_
+   : outerAttribute+ expression                         # AttributedExpression // technical, remove left recursive
+   | literalExpression                                  # LiteralExpression_
    | pathExpression                                     # PathExpression_
    | expression '.' pathExprSegment '(' callParams? ')' # MethodCallExpression   // 8.2.10
    | expression '.' identifier                          # FieldExpression  // 8.2.11
@@ -277,6 +280,120 @@ expressionStatement
    | expressionWithBlock ';'?
    ;
 
+// macro support
+innerAttribute
+   : '#' '!' '[' attr ']'
+   ;
+outerAttribute
+   : '#' '[' attr ']'
+   ;
+attr
+   : simplePath attrInput?
+   ;
+attrInput
+   : delimTokenTree
+   | '=' literalExpression
+   ; // w/o suffix
+
+delimTokenTree
+   : '(' tokenTree* ')'
+   | '[' tokenTree* ']'
+   | '{' tokenTree* '}'
+   ;
+tokenTree
+   : tokenTreeToken+
+   | delimTokenTree
+   ;
+tokenTreeToken
+   : macroIdentifierLikeToken
+   | macroLiteralToken
+   | macroPunctuationToken
+   | macroRepOp
+   | '$'
+   ;
+macroIdentifierLikeToken
+   : keyword
+   | identifier
+   | KW_MACRORULES
+   | KW_UNDERLINELIFETIME
+   | KW_DOLLARCRATE
+   | LIFETIME_OR_LABEL
+   ;
+macroLiteralToken
+   : literalExpression
+   ;
+macroPunctuationToken
+   : '-'
+   | '/'
+   | '%'
+   | '^'
+   | '!'
+   | '&'
+   | '|'
+   | '&&'
+   | '||'
+   | '+='
+   | '-='
+   | '*='
+   | '/='
+   | '%='
+   | '^='
+   | '&='
+   | '|='
+   | '='
+   | '=='
+   | '!='
+   | '>'
+   | '<'
+   | '>='
+   | '<='
+   | '@'
+   | '_'
+   | '.'
+   | '..'
+   | '...'
+   | '..='
+   | ','
+   | ';'
+   | ':'
+   | '::'
+   | '->'
+   | '=>'
+   | '#'
+   ;
+macroRepOp
+   : '*'
+   | '+'
+   | '?'
+   ;
+keyword
+   : KW_AS
+   | KW_BREAK
+   | KW_CONST
+   | KW_CONTINUE
+   | KW_CRATE
+   | KW_ELSE
+   | KW_FALSE
+   | KW_FOR
+   | KW_IF
+   | KW_IN
+   | KW_LET
+   | KW_LOOP
+   | KW_MUT
+   | KW_REF
+   | KW_RETURN
+   | KW_SELFVALUE
+   | KW_STATIC
+   | KW_STRUCT
+   | KW_SUPER
+   | KW_TRUE
+   | KW_TYPE
+   | KW_USE
+   | KW_WHERE
+   | KW_WHILE
+   | KW_STATICLIFETIME
+   ;
+
 // ************************** Rust parser ************************** //
 
 // 6.2
@@ -327,7 +444,7 @@ expressionWithBlock
 literalExpression
    : INTEGER_LITERAL
 //   | CHAR_LITERAL
-//   | STRING_LITERAL
+   | STRING_LITERAL
 //   | RAW_STRING_LITERAL
 //   | BYTE_LITERAL
    | BYTE_STRING_LITERAL
