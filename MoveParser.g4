@@ -129,14 +129,14 @@ constantItem
    : 'const' (identifier | '_') ':' type_ ('=' expression)? ';'
    ;
 useItem
-   : 'use' (address '::')? useTree ';'
+   : 'use' (numericalAddress '::')? useTree ';'
    ;
 useTree
    : (simplePath? '::')? ('*' | '{' ( useTree (',' useTree)* ','?)? '}')
    | simplePath ('as' (identifier | '_'))?
    ;
 friendItem
-   : 'friend' address '::' identifier ';'
+   : 'friend' numericalAddress '::' identifier ';'
    ;
 address
    : ( INTEGER_LITERAL | identifier )
