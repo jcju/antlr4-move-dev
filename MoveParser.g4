@@ -444,7 +444,7 @@ expressionWithBlock
 literalExpression
    : INTEGER_LITERAL
 //   | CHAR_LITERAL
-   | STRING_LITERAL
+//   | STRING_LITERAL
 //   | RAW_STRING_LITERAL
 //   | BYTE_LITERAL
    | BYTE_STRING_LITERAL
