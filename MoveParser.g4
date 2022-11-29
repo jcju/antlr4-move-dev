@@ -31,12 +31,12 @@ crate
 
 moveModule
    : 
-   ('module' address '::' identifier (';' | '{' item* '}')
+   (outerAttribute* 'module' address '::' identifier (';' | '{' item* '}')
    | 'address' address '{' moveModuleWithinAddrBlock* '}'
    )
    ;
 moveModuleWithinAddrBlock
-   : 'module' identifier (';' | '{' item* '}')
+   : outerAttribute* 'module' identifier (';' | '{' item* '}')
    ;
 
 moveScript
@@ -50,33 +50,28 @@ scriptFunctionItem
    : outerAttribute* 'fun' identifier genericParams? '(' functionParameters? ')' (blockExpression | ';')
    ;
 
+//item
+//   :  (functionItem | normalItem)
+//   ;
 item
-   :  (visItem | normalItem)
-   ;
-visItem
-   : visibility?
-   (
-      functionItem
-   )
-   ;
-normalItem
-   :
+   : outerAttribute*
    (
       typeItem
       | useItem
       | friendItem
       | constantItem
+      | functionItem
    )
    ;
 
-// visItem - function
-visibility
-   : ('public' | 'public(friend)' | 'public(script)')
-   ;   
+  
 functionItem
-   : entryModifier 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? acquireAnnotation? 
+   : visibility? entryModifier 'fun' identifier genericParams? '(' functionParameters? ')' functionReturnType? acquireAnnotation? 
       (blockExpression | ';')
    ;
+visibility
+   : ('public' | 'public(friend)' | 'public(script)')
+   ;    
 entryModifier
    : 'entry'?
    ;
@@ -84,17 +79,17 @@ genericParams
    : '<' ((genericParam ',')* genericParam ','? )?'>'
    ;
 genericParam
-   : 
+   : outerAttribute*
    (
       lifetimeParam
       | typeParam
       | constParam
    );
 lifetimeParam
-   : LIFETIME_OR_LABEL (':' lifetimeBounds)?
+   : outerAttribute* LIFETIME_OR_LABEL (':' lifetimeBounds)?
    ;
 typeParam
-   : identifier (':' typeParamBounds?)? ('=' type_)?
+   : outerAttribute* identifier (':' typeParamBounds?)? ('=' type_)?
    ;
 constParam
    : 'const' identifier ':' type_
@@ -114,7 +109,7 @@ typedSelf
    : 'mut'? 'self' ':' type_
    ;
 functionParam
-   :  (functionParamPattern | '...' | type_)
+   : outerAttribute* (functionParamPattern | '...' | type_)
    ;
 functionParamPattern
    : pattern ':' (type_ | '...')
@@ -260,7 +255,7 @@ structFields
    : structField (',' structField)* ','?
    ;
 structField
-   :  identifier ':' type_
+   : outerAttribute* identifier ':' type_
    ;
 
 // statement
@@ -272,7 +267,7 @@ statement
    ;
 
 letStatement
-   :  'let' patternNoTopAlt (':' type_)? ('=' expression)? ';'
+   : outerAttribute* 'let' patternNoTopAlt (':' type_)? ('=' expression)? ';'
    ;
 
 expressionStatement
@@ -433,8 +428,8 @@ compoundAssignOperator
    ;
 
 expressionWithBlock
-   : 
-     blockExpression
+   : outerAttribute+ expressionWithBlock // technical
+   | blockExpression
    | loopExpression
    | ifExpression
    | assertExpression
@@ -482,7 +477,7 @@ structExprFields
    : structExprField (',' structExprField)* (',' structBase | ','?)
    ;
 structExprField
-   :  (identifier | identifier ':' expression)
+   : outerAttribute* (identifier | identifier ':' expression)
    ;
 structBase
    : '..' expression
@@ -592,14 +587,14 @@ structPatternFields
    : structPatternField (',' structPatternField)*
    ;
 structPatternField
-   : 
+   : outerAttribute*
    (
       identifier ':' pattern
       | 'ref'? 'mut'? identifier
    )
    ;
 structPatternEtCetera
-   :  '..'
+   : outerAttribute* '..'
    ;
 tuplePattern
    : '(' tuplePatternItems? ')'
