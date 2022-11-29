@@ -39,10 +39,6 @@ KW_DROP: 'drop';
 KW_STORE: 'store';
 KW_KEY: 'key';
 
-
-SHIFTLEFT: '<<';
-SHIFTRIGHT: '>>';
-
 // https://doc.rust-lang.org/reference/keywords.html strict
 KW_AS: 'as';
 KW_BREAK: 'break';

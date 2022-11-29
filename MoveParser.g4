@@ -166,8 +166,8 @@ pathIdentSegment
    ;
 
 bitShiftOperator
-   : '<<'
-   | '>>'
+   : '<''<'
+   | '>''>'
    ;
 
 ifExpression
