@@ -221,6 +221,7 @@ expression
    | '(' expression ')'                                 # GroupedExpression   // 8.2.5
    | '[' vectorElements? ']'                            # VectorExpression         // exculsive in Move 
    | '(' tupleElements? ')'                             # TupleExpression  // limited support in Move 
+   | abilityField expression                            # AbilityFieldExpression // exculsive in Move
    | structExpression                                   # StructExpression_   // 8.2.8
    | expressionWithBlock                                # ExpressionWithBlock_
    ;
