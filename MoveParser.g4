@@ -136,7 +136,7 @@ useTree
    | simplePath ('as' (identifier | '_'))?
    ;
 friendItem
-   : 'friend' numericalAddress '::' identifier ';'
+   : 'friend' (address '::')? identifier ';'
    ;
 address
    : ( INTEGER_LITERAL | identifier )
@@ -182,49 +182,56 @@ ifExpression
    )?
    ;
 
+expression
+   : '(' expression ')' 
+   | identifier '<' identifier '>' '(' callParams? ')'      // # CallWithAcquiredExpression   
+   | innerExpression
+   ;
+
 assertExpression
    : 'assert!' '(' expression ',' (INTEGER_LITERAL | identifier) ')'
    ;
 
-expression
-   : outerAttribute+ expression                         # AttributedExpression // technical, remove left recursive
-   | literalExpression                                  # LiteralExpression_
-   | pathExpression                                     # PathExpression_
-   | expression '.' pathExprSegment '(' callParams? ')' # MethodCallExpression   // 8.2.10
-   | expression '.' identifier                          # FieldExpression  // 8.2.11
-   | expression '(' callParams? ')'                     # CallExpression   // 8.2.9
-   | expression '[' expression ']'                      # IndexExpression  // 8.2.6
-   | expression '?'                                     # ErrorPropagationExpression   // 8.2.4
-   | ('&' | '&&') 'mut'? expression                     # BorrowExpression // 8.2.4
-   | '*' expression                                     # DereferenceExpression  // 8.2.4
-   | ('-' | '!') expression                             # NegationExpression  // 8.2.4
-   | expression 'as' typeNoBounds                       # TypeCastExpression  // 8.2.4
-   | expression ('*' | '/' | '%') expression            # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression ('+' | '-') expression                  # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression '&' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression '^' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression '|' expression                          # ArithmeticOrLogicalExpression   // 8.2.4
-   | expression comparisonOperator expression           # ComparisonExpression   // 8.2.4
-   | expression bitShiftOperator expression             # BitShiftExpression   // exculsive in Move 
-   | expression '&&' expression                         # LazyBooleanExpression  // 8.2.4
-   | expression '||' expression                         # LazyBooleanExpression  // 8.2.4
-   | expression '..' expression?                        # RangeExpression  // 8.2.14
-   | '..' expression?                                   # RangeExpression  // 8.2.14
-   | '..=' expression                                   # RangeExpression  // 8.2.14
-   | expression '..=' expression                        # RangeExpression  // 8.2.14
-   | expression '=' expression                          # AssignmentExpression   // 8.2.4
-   | expression compoundAssignOperator expression       # CompoundAssignmentExpression // 8.2.4
-   | 'continue' LIFETIME_OR_LABEL? expression?          # ContinueExpression  // 8.2.13
-   | 'break' LIFETIME_OR_LABEL? expression?             # BreakExpression  // 8.2.13
-   | 'return' expression?                               # ReturnExpression // 8.2.17
-   | 'abort' INTEGER_LITERAL                            # AbortExpression          // exculsive in Move 
-   | '(' expression ')'                                 # GroupedExpression   // 8.2.5
-   | '[' vectorElements? ']'                            # VectorExpression         // exculsive in Move 
-   | '(' tupleElements? ')'                             # TupleExpression  // limited support in Move 
-   | abilityField expression                            # AbilityFieldExpression // exculsive in Move
-   | structExpression                                   # StructExpression_   // 8.2.8
-   | expressionWithBlock                                # ExpressionWithBlock_
+innerExpression
+   : outerAttribute+ innerExpression                         # AttributedExpression // technical, remove left recursive
+   | literalExpression                                       # LiteralExpression_
+   | pathExpression                                          # PathExpression_
+   | innerExpression '.' pathExprSegment '(' callParams? ')' # MethodCallExpression   // 8.2.10
+   | innerExpression '.' identifier                          # FieldExpression  // 8.2.11
+   | innerExpression '(' callParams? ')'                     # CallExpression   // 8.2.9
+   | innerExpression '[' innerExpression ']'                 # IndexExpression  // 8.2.6
+   | innerExpression '?'                                     # ErrorPropagationExpression   // 8.2.4
+   | ('&' | '&&') 'mut'? innerExpression                     # BorrowExpression // 8.2.4
+   | '*' innerExpression                                     # DereferenceExpression  // 8.2.4
+   | ('-' | '!') innerExpression                             # NegationExpression  // 8.2.4
+   | innerExpression 'as' typeNoBounds                       # TypeCastExpression  // 8.2.4
+   | innerExpression ('*' | '/' | '%') innerExpression       # ArithmeticOrLogicalExpression   // 8.2.4
+   | innerExpression ('+' | '-') innerExpression             # ArithmeticOrLogicalExpression   // 8.2.4
+   | innerExpression '&' innerExpression                     # ArithmeticOrLogicalExpression   // 8.2.4
+   | innerExpression '^' innerExpression                     # ArithmeticOrLogicalExpression   // 8.2.4
+   | innerExpression '|' innerExpression                     # ArithmeticOrLogicalExpression   // 8.2.4
+   | innerExpression comparisonOperator innerExpression      # ComparisonExpression   // 8.2.4
+   | innerExpression bitShiftOperator innerExpression        # BitShiftExpression   // exclusive in Move 
+   | innerExpression '&&' innerExpression                    # LazyBooleanExpression  // 8.2.4
+   | innerExpression '||' innerExpression                    # LazyBooleanExpression  // 8.2.4
+   | innerExpression '..' innerExpression?                   # RangeExpression  // 8.2.14
+   | '..' innerExpression?                                   # RangeExpression  // 8.2.14
+   | '..=' innerExpression                                   # RangeExpression  // 8.2.14
+   | innerExpression '..=' innerExpression                   # RangeExpression  // 8.2.14
+   | innerExpression '=' innerExpression                     # AssignmentExpression   // 8.2.4
+   | innerExpression compoundAssignOperator innerExpression  # CompoundAssignmentExpression // 8.2.4
+   | 'continue' LIFETIME_OR_LABEL? innerExpression?          # ContinueExpression  // 8.2.13
+   | 'break' LIFETIME_OR_LABEL? innerExpression?             # BreakExpression  // 8.2.13
+   | 'return' innerExpression?                               # ReturnExpression // 8.2.17
+   | 'abort' INTEGER_LITERAL                                 # AbortExpression         // exclusive in Move 
+   | '(' innerExpression ')'                                 # GroupedExpression   
+   | '[' vectorElements? ']'                                 # VectorExpression        // exclusive in Move 
+   | '(' tupleElements? ')'                                  # TupleExpression         // limited support in Move 
+   | abilityField innerExpression                            # AbilityFieldExpression  // exclusive in Move
+   | structExpression                                        # StructExpression_   
+   | expressionWithBlock                                     # ExpressionWithBlock_
    ;
+
 
 vectorElements
    : expression (',' expression)* ','?
